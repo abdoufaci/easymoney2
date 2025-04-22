@@ -34,6 +34,9 @@ async function CoursePage({ params: { courseId, lang } }: Props) {
     <div
       style={{
         backgroundImage: "url('/blur-bg.svg')",
+        backgroundPosition: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
       }}
       className="min-h-screen">
       <DashboardHeader courseName={course?.englishTitle} />

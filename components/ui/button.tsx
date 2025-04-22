@@ -25,6 +25,7 @@ const buttonVariants = cva(
           "border border-white hover:bg-white hover:text-black text-white bg-transparent",
         brand_link: "text-brand underline-offset-4 hover:underline",
         white_link: "text-white underline-offset-4 hover:underline",
+        red_link: "text-[#FF4242] underline",
         dark_brand: "bg-brand/95 text-white hover:bg-brand",
         brand: "bg-brand/90 text-white hover:bg-brand",
         addSection:

@@ -187,11 +187,22 @@ export default function StudentDashboard({
                           )}
                         </TableCell>
                         <TableCell>
-                          {false ? (
+                          {student.VerificationStatus === "VERIFIED" ? (
                             <Badge className="bg-teal-900/20 text-teal-500 hover:bg-teal-900/30 hover:text-teal-500">
                               <Check className="w-3.5 h-3.5 mr-1" />
                               Verified
                             </Badge>
+                          ) : student.VerificationStatus === "PENDING" ? (
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                              }}
+                              variant={"brand"}
+                              size={"sm"}
+                              className="rounded-full w-full">
+                              Verify
+                            </Button>
                           ) : (
                             <Badge
                               variant="outline"

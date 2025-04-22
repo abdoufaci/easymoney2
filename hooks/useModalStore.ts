@@ -1,13 +1,20 @@
+import { ExtendedUser } from "@/types/next-auth";
 import { CourseWithVideos, SectionWithCourses } from "@/types/types";
 import { Prisma } from "@prisma/client";
 import { create } from "zustand";
 
-export type ModalType = "addSection" | "addCourse" | "editCourse";
+export type ModalType =
+  | "addSection"
+  | "addCourse"
+  | "editCourse"
+  | "addVerificationDocuments"
+  | "verifyDocuments";
 
 interface ModalData {
   dict?: any;
   section?: SectionWithCourses;
   course?: CourseWithVideos;
+  user?: ExtendedUser;
 }
 
 interface ModalStore {

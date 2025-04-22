@@ -67,13 +67,42 @@ export const ActivateSchema = z.object({
   phone: z.string().min(1, {
     message: "Phone is Required",
   }),
-  image: z.object({
-    url: z.string(),
-    key: z.string(),
-  }),
+  image: z
+    .object({
+      url: z.string(),
+      key: z.string(),
+    })
+    .optional(),
   zipCode: z.string(),
   country: z.string(),
   city: z.string(),
   adress: z.string(),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.object({
+    day: z.string(),
+    month: z.string(),
+    year: z.string(),
+  }),
+});
+
+export const StudentSettingsSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is Required",
+  }),
+  image: z
+    .object({
+      url: z.string(),
+      key: z.string(),
+    })
+    .optional(),
+});
+
+export const VerificationDocumentsSchema = z.object({
+  document1: z.object({
+    url: z.string(),
+    key: z.string(),
+  }),
+  document2: z.object({
+    url: z.string(),
+    key: z.string(),
+  }),
 });

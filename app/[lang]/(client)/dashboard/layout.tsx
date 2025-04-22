@@ -23,6 +23,9 @@ export default async function DashboardLayout({ children }: Props) {
     <div
       style={{
         backgroundImage: "url('/blur-bg.svg')",
+        backgroundPosition: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
       }}
       className="min-h-screen">
       <DashboardHeader />

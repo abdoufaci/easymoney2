@@ -17,9 +17,19 @@ async function DashboardPage() {
             <h1 className="text-lg font-medium">{section.title}</h1>
           </div>
           <div className="flex items-center gap-5">
-            {section.courses.map((course) => (
-              <StudentCourseCard key={course.id} course={course} user={user} />
-            ))}
+            {section.courses.map((course) =>
+              !!course.students.length ? (
+                <Link key={course.id} href={`/course/${course.id}`}>
+                  <StudentCourseCard course={course} user={user} />
+                </Link>
+              ) : (
+                <StudentCourseCard
+                  key={course.id}
+                  course={course}
+                  user={user}
+                />
+              )
+            )}
           </div>
         </div>
       ))}

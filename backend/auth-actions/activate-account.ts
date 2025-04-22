@@ -23,6 +23,11 @@ export const activateAccount = async (
 ) => {
   const user = await currentUser();
 
+  const date = new Date();
+  date.setFullYear(Number(dateOfBirth.year));
+  date.setMonth(Number(dateOfBirth.month) - 1);
+  date.setDate(Number(dateOfBirth.day));
+
   await db.user.update({
     where: {
       id: user?.id,
@@ -33,7 +38,7 @@ export const activateAccount = async (
       zipCode,
       adress,
       city,
-      dateOfBirth,
+      dateOfBirth: date,
       isActive: true,
       image,
     },

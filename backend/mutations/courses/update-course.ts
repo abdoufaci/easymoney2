@@ -4,6 +4,7 @@ import { AddCourseSchema } from "@/components/forms/add-course-form";
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { deleteFiles } from "../delete-file";
 
 export const updateCourse = async (
   data: Partial<{
@@ -25,7 +26,11 @@ export const updateCourse = async (
     videoId: string;
     id: string;
   }[],
-  isActive: boolean
+  isActive: boolean,
+  imageToDelete: {
+    url: string;
+    key: string;
+  } | null
 ) => {
   const videosToAdd = data.videos
     ?.filter((item: any) => item.id === "")
@@ -36,6 +41,10 @@ export const updateCourse = async (
 
   if (data.videos) {
     delete data.videos;
+  }
+
+  if (imageToDelete) {
+    await deleteFiles([imageToDelete]);
   }
 
   await db.course.update({

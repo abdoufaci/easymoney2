@@ -18,6 +18,12 @@ enum UserRole {
   USER
 }
 
+enum VerificationStatus {
+  NOT_VERIFIED
+  PENDING
+  VERIFIED
+}
+
 model User {
   id                    String                 @id @default(uuid())
   name                  String?
@@ -36,7 +42,8 @@ model User {
   zipCode               String?
   adress                String?
   isActive              Boolean                @default(false)
-  isVerified            Boolean                @default(false)
+  VerificationStatus    VerificationStatus     @default(NOT_VERIFIED)
+  documents             Json?
 
   progress VideoProgress[]
   courses  Course[]

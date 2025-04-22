@@ -48,7 +48,7 @@ export function AppSidebar({
         <NavMain items={navigation(dict)} />
       </SidebarContent>
       <SidebarRail />
-      <SidebarFooter>
+      <SidebarFooter className="w-full flex items-center justify-center">
         <UserAvatar user={user} />
       </SidebarFooter>
     </Sidebar>

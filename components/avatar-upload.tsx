@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { useModal } from "@/hooks/useModalStore";
 import { cn } from "@/lib/utils";
-import { useTransition } from "react";
+import { Dispatch, SetStateAction, useTransition } from "react";
 import { deleteFiles } from "@/backend/mutations/delete-file";
 import { Button } from "./ui/button";
 
@@ -20,12 +20,21 @@ interface AvatarImageUploadProps {
     key: string;
   } | null;
   endpoint: "imageUploader" | "labelFile" | "logoUploader";
+  settings?: boolean;
+  setImageToDelete: Dispatch<
+    SetStateAction<{
+      url: string;
+      key: string;
+    } | null>
+  >;
 }
 
 export const AvatarImageUpload = ({
   onChange,
   value,
   endpoint = "imageUploader",
+  settings = false,
+  setImageToDelete,
 }: AvatarImageUploadProps) => {
   const { data } = useModal();
   const [isPending, startTransition] = useTransition();
@@ -38,6 +47,11 @@ export const AvatarImageUpload = ({
         .catch(() => toast.error("Something went wrong, try again."))
         .finally(() => toast.dismiss());
     });
+  };
+
+  const addToBin = (value: { url: string; key: string }) => {
+    setImageToDelete(value);
+    onChange(undefined);
   };
 
   if (value) {
@@ -60,15 +74,20 @@ export const AvatarImageUpload = ({
           className="rounded-md w-full h-52 object-cover"
         />
         <Button
-          onClick={() => mutate(value)}
+          onClick={() => (!!data.course ? addToBin(value) : mutate(value))}
           variant={"delete"}
           className="rounded-full h-5 w-5 p-0 flex items-center justify-center bg-[#FF000029] border-none absolute top-3 right-3">
           <Minus className="h-1 w-1" />
         </Button>
       </div>
     ) : (
-      <div className="w-52 h-52 relative">
-        <div className="w-52 h-52 rounded-full bg-black/50 absolute top-0 left-0" />
+      <div
+        className={cn(
+          settings ? "flex flex-col items-center " : "w-52 h-52 relative"
+        )}>
+        {!settings && (
+          <div className="w-52 h-52 rounded-full bg-black/50 absolute top-0 left-0" />
+        )}
         <Image
           key={value.key}
           alt="image"
@@ -77,12 +96,24 @@ export const AvatarImageUpload = ({
           width={300}
           className="rounded-full w-52 h-52 object-cover"
         />
-        <div className="flex items-center gap-5 absolute top-2 right-2">
-          <XIcon
-            className="h-7 w-7 text-[#ED2323] bg-[#EB16194A] rounded-full p-1.5 cursor-pointer"
-            onClick={() => mutate(value)}
-          />
-        </div>
+        {settings && (
+          <Button
+            onClick={() => {
+              setImageToDelete(value);
+              onChange(undefined);
+            }}
+            variant={"red_link"}>
+            Remove
+          </Button>
+        )}
+        {!settings && (
+          <div className="flex items-center gap-5 absolute top-2 right-2">
+            <XIcon
+              className="h-7 w-7 text-[#ED2323] bg-[#EB16194A] rounded-full p-1.5 cursor-pointer"
+              onClick={() => mutate(value)}
+            />
+          </div>
+        )}
       </div>
     );
   }

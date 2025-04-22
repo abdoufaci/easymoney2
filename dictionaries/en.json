@@ -1,4 +1,11 @@
 {
+  "settings": {
+    "processingVerification": "Processing your verification ...",
+    "verifyAccount": "Verify your account",
+    "AccountVerification": "Account Verification",
+    "pleasAdd": "Please, Upload your identity card picture",
+    "updated": "your profile has been updated"
+  },
   "general": {
     "name": "Name",
     "phoneNumber":"Phone Number",
@@ -8,7 +15,12 @@
     "status": "Status",
     "city": "City",
     "adress": "Adress",
-    "zipCode": "Zip Code"
+    "zipCode": "Zip Code",
+    "remove": "Remove",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "termsAndConditions": "By Clicking Done i agree to the",
+    "termsCTA": "terms and conditions"
   },
   "sidebar": {
     "dashboard": "Dashboard",

@@ -39,16 +39,19 @@ function StudentDetails({ dict, student, courses }: Props) {
     <ScrollArea className="h-[95vh]">
       <div className="flex flex-col items-center gap-5">
         <div className="flex flex-col items-center gap-4">
-          <Image
-            alt="avatar"
-            src={
-              //@ts-ignore
-              student?.image?.url || ""
-            }
-            height={100}
-            width={100}
-            className="object-cover w-52 h-52 rounded-full border-[10px] border-[#1FB4AB0F]"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 w-52 h-52 rounded-full bg-brand blur-xl opacity-70 -z-10"></div>
+            <Image
+              alt="avatar"
+              src={
+                //@ts-ignore
+                student?.image?.url || ""
+              }
+              height={100}
+              width={100}
+              className="object-cover w-52 h-52 rounded-full border-[10px] border-[#1FB4AB0F] z-50"
+            />
+          </div>
           <div className="space-y-1 flex flex-col items-center">
             <h3 className="text-brand text-sm">4848747848</h3>
             <h1 className="text-2xl font-semibold">{student.name}</h1>

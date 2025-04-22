@@ -52,6 +52,10 @@ export function AddCourseForm({ isActive }: Props) {
   const [videosToDelete, setVideosToDelete] = useState<
     { englishTitle: string; arabicTitle: string; videoId: string; id: string }[]
   >([]);
+  const [imageToDelete, setImageToDelete] = useState<{
+    url: string;
+    key: string;
+  } | null>(null);
 
   const { section, course } = data;
 
@@ -109,7 +113,13 @@ export function AddCourseForm({ isActive }: Props) {
       // });
 
       startTransition(() => {
-        updateCourse(dataToUpdate, course?.id || "", videosToDelete, isActive)
+        updateCourse(
+          dataToUpdate,
+          course?.id || "",
+          videosToDelete,
+          isActive,
+          imageToDelete
+        )
           .then(() => {
             toast.success("Course updated !");
             onClose();
@@ -146,6 +156,7 @@ export function AddCourseForm({ isActive }: Props) {
                         value={field.value}
                         onChange={field.onChange}
                         endpoint="imageUploader"
+                        setImageToDelete={setImageToDelete}
                       />
                     </div>
                   </FormControl>

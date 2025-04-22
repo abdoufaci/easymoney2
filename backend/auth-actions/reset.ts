@@ -28,7 +28,8 @@ export const reset = async (values: z.infer<typeof ResetSchema>, dict: any) => {
   const passwordResetToken = await generatePasswordResetToken(email);
   await sendPasswordResetEmail(
     passwordResetToken.email,
-    passwordResetToken.token
+    passwordResetToken.token,
+    existingUser.name || ""
   );
 
   return { success: dict.auth.resetEmailSent };

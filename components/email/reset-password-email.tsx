@@ -5,7 +5,7 @@ interface Props {
   name: string;
 }
 
-export default function EmailVerification({ link, name }: Props) {
+export default function ResetPasswordEmail({ link, name }: Props) {
   return (
     <div
       style={{
@@ -49,8 +49,8 @@ export default function EmailVerification({ link, name }: Props) {
             margin: "20px 0",
             lineHeight: "1.6",
           }}>
-          You&apos;re one step away from unlocking your account and starting
-          your journey.
+          We received a request to reset your password for your Easy Money
+          University account.
         </p>
 
         <p
@@ -60,8 +60,8 @@ export default function EmailVerification({ link, name }: Props) {
             margin: "20px 0",
             lineHeight: "1.6",
           }}>
-          To activate your account, please confirm your email by clicking the
-          link below:
+          If you made this request, click the button below to create a new
+          password:
         </p>
 
         {/* Verify Email Button */}
@@ -79,7 +79,7 @@ export default function EmailVerification({ link, name }: Props) {
               textAlign: "center",
               fontWeight: "bold",
             }}>
-            Verify your email
+            Reset My Password
           </a>
         </div>
 

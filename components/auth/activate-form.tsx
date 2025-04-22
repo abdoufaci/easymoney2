@@ -18,7 +18,7 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/backend/auth-actions/login";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -37,6 +37,15 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { AvatarImageUpload } from "../avatar-upload";
 import { activateAccount } from "@/backend/auth-actions/activate-account";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { months } from "@/constants/months";
+import { years } from "@/constants/years";
 
 interface Props {
   dict: any;
@@ -65,10 +74,37 @@ export function ActivateForm({ dict }: Props) {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const [days, setDays] = useState<number[]>([]);
 
   const form = useForm<z.infer<typeof ActivateSchema>>({
     resolver: zodResolver(ActivateSchema),
+    defaultValues: {
+      dateOfBirth: {
+        year: "",
+        month: "",
+        day: "",
+      },
+    },
   });
+
+  const dateOfBirth = form.watch("dateOfBirth");
+
+  useEffect(() => {
+    if (dateOfBirth.month && dateOfBirth.year) {
+      const year = Number.parseInt(dateOfBirth.year);
+      const month = Number.parseInt(dateOfBirth.month);
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      const daysArray = [];
+      for (let day = 1; day <= daysInMonth; day++) {
+        daysArray.push(day);
+      }
+
+      setDays(daysArray);
+    } else {
+      setDays([]);
+    }
+  }, [dateOfBirth?.month, dateOfBirth?.year]);
 
   const onSubmit = (data: z.infer<typeof ActivateSchema>) => {
     setError("");
@@ -103,6 +139,7 @@ export function ActivateForm({ dict }: Props) {
                         value={field.value}
                         onChange={field.onChange}
                         endpoint="logoUploader"
+                        setImageToDelete={() => {}}
                       />
                     </div>
                   </FormControl>
@@ -115,32 +152,64 @@ export function ActivateForm({ dict }: Props) {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"whiteOutline"}
-                          size={"xl"}
-                          className={cn(
-                            "w-full pl-5 text-left font-normal rounded-full flex items-center justify-start"
-                          )}>
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>{dict?.auth.dateOfBirth}</span>
-                          )}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <div className="flex items-center gap-2">
+                    <Select
+                      value={field.value.year}
+                      onValueChange={(year) =>
+                        field.onChange({
+                          ...field.value,
+                          year,
+                        })
+                      }>
+                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                        <SelectValue placeholder="Year" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-80">
+                        {years.map((year) => (
+                          <SelectItem key={year} value={year.toString()}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Select
+                      value={field.value.month}
+                      onValueChange={(month) =>
+                        field.onChange({
+                          ...field.value,
+                          month,
+                        })
+                      }>
+                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                        <SelectValue placeholder="Month" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {months.map((month) => (
+                          <SelectItem key={month.value} value={month.value}>
+                            {month.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Select
+                      value={field.value.day}
+                      onValueChange={(day) =>
+                        field.onChange({ ...field.value, day })
+                      }
+                      disabled={!field.value.month || !field.value.year}>
+                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                        <SelectValue placeholder="Day" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {days.map((day) => (
+                          <SelectItem key={day} value={day.toString()}>
+                            {day}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

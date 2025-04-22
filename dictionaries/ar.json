@@ -1,4 +1,10 @@
 {
+  "settings": {
+    "processingVerification": "جارٍ معالجة التحقق ...",
+    "verifyAccount": "تحقق من حسابك",
+    "AccountVerification": "التحقق من الحساب",
+    "pleasAdd": "يرجى تحميل صورة بطاقة الهوية الخاصة بك"
+  },
   "general": {
     "name": "الإسم",
     "phoneNumber": "رقم الهاتف",
@@ -8,7 +14,13 @@
     "status": "الحالة",
     "city": "المدينة",
     "adress": "العنوان",
-    "zipCode": "الرمز البريدي"
+    "zipCode": "الرمز البريدي",
+    "remove": "إزالة",
+    "verified": "تم التحقق",
+    "notVerified": "غير موثوق",
+    "termsAndConditions": "من خلال النقر على تم، أوافق على ",
+    "termsCTA": "الشروط والأحكام",
+    "updated": "تم تحديث ملفك الشخصي"
   },
   "sidebar": {
     "dashboard": "لوحة التحكم",

@@ -26,12 +26,18 @@ function UserAvatar({ user }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex items-center gap-4 cursor-pointer">
-          <Avatar className="border-2 border-[#1FB4AB70] h-12 w-12">
-            <AvatarImage src={user?.image.url || ""} className="object-cover" />
-            <AvatarFallback className="bg-brand/10 cursor-pointer">
-              {user?.name?.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <div className="absolute inset-0 w-12 h-12 rounded-full bg-brand blur-xl opacity-70"></div>
+            <Avatar className="border-2 border-[#1FB4AB70] h-12 w-12">
+              <AvatarImage
+                src={user?.image.url || ""}
+                className="object-cover"
+              />
+              <AvatarFallback className="bg-brand/10 cursor-pointer">
+                {user?.name?.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </div>
           <div className="space-y-1">
             <h1 className="font-semibold text-sm">{user?.name}</h1>
             <h3 className="text-brand text-sm">
@@ -42,7 +48,10 @@ function UserAvatar({ user }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href={"/settings"}>Settings</Link>
+          <Link
+            href={user?.role === "USER" ? "/dashboard/settings" : "/settings"}>
+            Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           disabled={isPending}

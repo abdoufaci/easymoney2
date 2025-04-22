@@ -1,0 +1,57 @@
+export const WatchIcon = () => {
+  return (
+    <svg
+      width="39"
+      height="38"
+      viewBox="0 0 39 38"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <g filter="url(#filter0_d_134_1867)">
+        <path
+          d="M21.4662 17.5265L19.3965 18.9063V15.4568M13.1875 18.9063C13.1875 19.7217 13.3481 20.5291 13.6601 21.2824C13.9722 22.0357 14.4295 22.7202 15.0061 23.2967C15.5826 23.8733 16.2671 24.3307 17.0204 24.6427C17.7738 24.9547 18.5811 25.1153 19.3965 25.1153C20.2119 25.1153 21.0193 24.9547 21.7726 24.6427C22.5259 24.3307 23.2104 23.8733 23.787 23.2967C24.3635 22.7202 24.8209 22.0357 25.1329 21.2824C25.445 20.5291 25.6056 19.7217 25.6056 18.9063C25.6056 18.0909 25.445 17.2835 25.1329 16.5302C24.8209 15.7769 24.3635 15.0924 23.787 14.5158C23.2104 13.9393 22.5259 13.4819 21.7726 13.1699C21.0193 12.8579 20.2119 12.6973 19.3965 12.6973C18.5811 12.6973 17.7738 12.8579 17.0204 13.1699C16.2671 13.4819 15.5826 13.9393 15.0061 14.5158C14.4295 15.0924 13.9722 15.7769 13.6601 16.5302C13.3481 17.2835 13.1875 18.0909 13.1875 18.9063Z"
+          stroke="#1FB4AB"
+          stroke-width="1.37978"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          shape-rendering="crispEdges"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_134_1867"
+          x="0.671322"
+          y="0.180599"
+          width="37.4503"
+          height="37.4513"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="5.91336" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.160784 0 0 0 0 0.47451 0 0 0 0 1 0 0 0 0.6 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_134_1867"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_134_1867"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  );
+};

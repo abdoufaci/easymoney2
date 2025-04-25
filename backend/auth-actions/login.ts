@@ -23,7 +23,7 @@ export const login = async (
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+    return { error: dict?.auth?.invalidFields };
   }
 
   const { email, password, code } = validatedFields.data;
@@ -31,7 +31,7 @@ export const login = async (
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "Email does not exist!" };
+    return { error: dict?.auth?.emailDoesNotExist };
   }
 
   if (!existingUser.emailVerified) {
@@ -44,7 +44,20 @@ export const login = async (
       existingUser.name || ""
     );
 
-    return { success: "Confirmation email sent !" };
+    return { success: dict?.auth?.confirmationEmailSent };
+  }
+
+  if (existingUser.sessions > 0 && existingUser.role !== "ADMIN") {
+    return { error: dict?.auth?.alreadyLoggedIn };
+  }
+
+  if (existingUser.sessions === 0 && existingUser.role !== "ADMIN") {
+    await db.user.update({
+      where: { id: existingUser.id },
+      data: {
+        sessions: 1,
+      },
+    });
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {

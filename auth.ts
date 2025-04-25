@@ -48,7 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
         });
       }
-
       if (account?.provider !== "credentials") return true;
 
       if (!existingUser?.emailVerified) {

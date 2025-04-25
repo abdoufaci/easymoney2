@@ -85,7 +85,10 @@
     "country": "Country",
     "city": "City",
     "adress": "Adress",
-    "zipCode": "Zip Code"
+    "zipCode": "Zip Code",
+    "invalidFileds": "Invalid Fields",
+    "confirmationEmailSent": "Confirmation email sent !",
+    "alreadyLoggedIn": "you are already logged in with another device"
   },
   "home": {
     "title": "English"

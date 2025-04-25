@@ -85,7 +85,10 @@
     "country": "الدولة",
     "city": "المدينة",
     "adress": "العنوان",
-    "zipCode": "الرمز البريدي"
+    "zipCode": "الرمز البريدي",
+    "invalidFileds": "حقول غير صالحة",
+    "confirmationEmailSent": "تم إرسال بريد التأكيد",
+    "alreadyLoggedIn": "أنت مسجل الدخول بالفعل من جهاز آخر"
   },
   "home": {
     "title": "مرحبًا بك في Easymoney"

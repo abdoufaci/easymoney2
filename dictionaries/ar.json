@@ -1,9 +1,18 @@
 {
+  "verify": {
+    "verifyAccountDesc": "يجب التحقق من حسابك بواسطة بطاقة الهوية حتى تتمكن \nمن الوصول إلى الدورات",
+    "why": "لماذا أحتاج إلى التحقق من حسابي؟",
+    "verifyNow": "تحقق الآن",
+    "verifyLater": "تحقق لاحقًا"
+  },
   "settings": {
     "processingVerification": "جارٍ معالجة التحقق ...",
     "verifyAccount": "تحقق من حسابك",
     "AccountVerification": "التحقق من الحساب",
-    "pleasAdd": "يرجى تحميل صورة بطاقة الهوية الخاصة بك"
+    "pleasAdd": "يرجى تحميل صورة بطاقة الهوية الخاصة بك",
+    "accountVerification": "التحقق من الحساب",
+    "reject": "رفض",
+    "accept": "قبول"
   },
   "general": {
     "name": "الإسم",

@@ -3,6 +3,7 @@
 import { currentUser } from "@/lib/auth";
 import db from "@/lib/db";
 import { ActivateSchema } from "@/schemas";
+import ShortUniqueId from "short-unique-id";
 import { z } from "zod";
 
 export const activateAccount = async (
@@ -28,6 +29,8 @@ export const activateAccount = async (
   date.setMonth(Number(dateOfBirth.month) - 1);
   date.setDate(Number(dateOfBirth.day));
 
+  const studentNumber = new ShortUniqueId({ length: 10, dictionary: "number" });
+
   await db.user.update({
     where: {
       id: user?.id,
@@ -41,6 +44,7 @@ export const activateAccount = async (
       dateOfBirth: date,
       isActive: true,
       image,
+      studentNumber: studentNumber.rnd(),
     },
   });
 };

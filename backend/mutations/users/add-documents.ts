@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import { VerificationDocumentsSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import ShortUniqueId from "short-unique-id";
 
 export const addDocuments = async (
   data: z.infer<typeof VerificationDocumentsSchema>

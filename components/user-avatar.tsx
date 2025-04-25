@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+import { BadgeCheck, LogOut } from "lucide-react";
 import Link from "next/link";
 import { logout } from "@/backend/auth-actions/logout";
 import { useTransition } from "react";
@@ -39,7 +39,12 @@ function UserAvatar({ user }: Props) {
             </Avatar>
           </div>
           <div className="space-y-1">
-            <h1 className="font-semibold text-sm">{user?.name}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="font-semibold text-sm">{user?.name}</h1>
+              {user?.role === "USER" && user?.isVerified && (
+                <BadgeCheck className="fill-[#1FB4AB] text-black h-4 w-4" />
+              )}
+            </div>
             <h3 className="text-brand text-sm">
               {user?.role === "ADMIN" ? "Admin" : "EM Student"}
             </h3>

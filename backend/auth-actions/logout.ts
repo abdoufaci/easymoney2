@@ -1,7 +1,23 @@
-"use server"
+"use server";
 
-import {signOut} from "@/auth"
+import { signOut } from "@/auth";
+import { getUserById } from "@/data/user";
+import { currentUser } from "@/lib/auth";
+import db from "@/lib/db";
 
 export const logout = async () => {
-    await signOut()
-}
+  const auth = await currentUser();
+  const user = await getUserById(auth?.id || "");
+
+  if (!user) return;
+
+  if (user?.sessions > 0) {
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        sessions: 0,
+      },
+    });
+  }
+  await signOut();
+};

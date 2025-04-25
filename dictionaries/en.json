@@ -1,10 +1,19 @@
 {
+  "verify": {
+    "verifyAccountDesc": "Your Account should be verified by identity card so you\n can access to the courses",
+    "why": "Why I Need To Verify My Account?",
+    "verifyNow": "Verify Now",
+    "verifyLater": "Verify Later"
+  },
   "settings": {
     "processingVerification": "Processing your verification ...",
     "verifyAccount": "Verify your account",
     "AccountVerification": "Account Verification",
     "pleasAdd": "Please, Upload your identity card picture",
-    "updated": "your profile has been updated"
+    "updated": "your profile has been updated",
+    "accountVerification": "Account Verification",
+    "reject": "Reject",
+    "accept": "Accept"
   },
   "general": {
     "name": "Name",

@@ -16,6 +16,10 @@ export default async function Home({ params }: any) {
     redirect("/dashboard");
   }
 
+  if (user.role === "ADMIN") {
+    redirect("/admin");
+  }
+
   // await sendVerificationEmail("abdoufaci982@gmail.com", "abd", "Abdou Faci");
 
   return <main>{dict.home.title}</main>;

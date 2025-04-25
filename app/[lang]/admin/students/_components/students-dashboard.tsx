@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Check } from "lucide-react";
+import { Search, Check, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import StudentDetails from "./student-details";
 import { CourseWithVideos, CourseWithVideosProgress } from "@/types/types";
+import { useModal } from "@/hooks/useModalStore";
 
 interface Props {
   currentPage: number;
@@ -48,6 +49,7 @@ export default function StudentDashboard({
   courses,
 }: Props) {
   const router = useRouter();
+  const { onOpen } = useModal();
 
   const totalPages = Math.ceil(totalStudents / studentsPerPage);
 
@@ -188,26 +190,39 @@ export default function StudentDashboard({
                         </TableCell>
                         <TableCell>
                           {student.VerificationStatus === "VERIFIED" ? (
-                            <Badge className="bg-teal-900/20 text-teal-500 hover:bg-teal-900/30 hover:text-teal-500">
-                              <Check className="w-3.5 h-3.5 mr-1" />
-                              Verified
+                            <Badge
+                              className="bg-brand/20 text-brand hover:bg-brand/30 hover:text-brand 
+                            py-2 px-3 rounded-full flex items-center gap-2 text-xs">
+                              <BadgeCheck className="w-4 h-4" />
+                              <h1>Verified</h1>
                             </Badge>
                           ) : student.VerificationStatus === "PENDING" ? (
                             <Button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
+                                onOpen("verifyDocuments", {
+                                  user: student,
+                                  dict,
+                                });
                               }}
                               variant={"brand"}
                               size={"sm"}
                               className="rounded-full w-full">
                               Verify
                             </Button>
+                          ) : student.VerificationStatus === "REJECTED" ? (
+                            <Badge
+                              className="bg-[#F63F4B1F] text-[#F63F4B] hover:bg-[#F63F4B] hover:text-[#F63F4B] 
+                            py-2 px-3 rounded-full flex items-center gap-2 text-xs">
+                              <BadgeCheck className="w-4 h-4" />
+                              <h1>Rejected</h1>
+                            </Badge>
                           ) : (
                             <Badge
-                              variant="outline"
-                              className="bg-gray-800 text-gray-300 border-[#B9BEC7] hover:bg-gray-700">
-                              Not verified
+                              className="bg-[#BCBDBD1A] text-[#BCBDBD] hover:bg-[#BCBDBD1A] hover:text-[#BCBDBD] 
+                            py-2 px-3 rounded-full flex items-center gap-2 text-xs">
+                              <h1>Not Verified</h1>
                             </Badge>
                           )}
                         </TableCell>

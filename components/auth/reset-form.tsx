@@ -62,12 +62,12 @@ export function ResetForm({ dict }: Props) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isPending}
                       placeholder={dict.auth.emailPlaceholder}
+                      className="border-white border-[0.54px] text-white placeholder:text-white py-6 pl-5 rounded-full"
                     />
                   </FormControl>
                   <FormMessage />
@@ -78,10 +78,10 @@ export function ResetForm({ dict }: Props) {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button
-            variant={"gradient_brand"}
+            variant={"white"}
             type="submit"
             disabled={isPending}
-            className="w-full">
+            className="w-full rounded-full">
             {dict.auth.resetPasswordButton}
           </Button>
         </form>

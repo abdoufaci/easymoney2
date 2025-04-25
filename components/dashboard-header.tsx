@@ -14,7 +14,7 @@ async function DashboardHeader({ courseName }: Props) {
   const user = await currentUser();
 
   return (
-    <div className="flex items-center justify-between sticky top-0 left-0 w-full p-10">
+    <div className="flex items-center justify-between sticky top-0 left-0 w-full p-10 pb-5 backdrop-blur-lg z-40">
       <div className="flex items-center gap-5">
         <Link href={"/dashboard"}>
           <Image

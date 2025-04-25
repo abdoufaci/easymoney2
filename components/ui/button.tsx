@@ -36,6 +36,7 @@ const buttonVariants = cva(
         white: "bg-white hover:bg-white/90 text-[#0C1418]",
         active: "bg-[#24C26D42] text-[#24C26D]",
         hidden: "bg-[#FAD81642] text-[#FAD816]",
+        expand: "bg-black/50 hover:bg-black/80 text-[#5ae33e]",
       },
       size: {
         default: "h-9 px-4 py-2",

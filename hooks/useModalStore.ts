@@ -1,6 +1,6 @@
 import { ExtendedUser } from "@/types/next-auth";
 import { CourseWithVideos, SectionWithCourses } from "@/types/types";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType =
@@ -8,13 +8,14 @@ export type ModalType =
   | "addCourse"
   | "editCourse"
   | "addVerificationDocuments"
-  | "verifyDocuments";
+  | "verifyDocuments"
+  | "verifyNowLater";
 
 interface ModalData {
   dict?: any;
   section?: SectionWithCourses;
   course?: CourseWithVideos;
-  user?: ExtendedUser;
+  user?: User;
 }
 
 interface ModalStore {

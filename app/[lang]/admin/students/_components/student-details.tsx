@@ -53,9 +53,16 @@ function StudentDetails({ dict, student, courses }: Props) {
             />
           </div>
           <div className="space-y-1 flex flex-col items-center">
-            <h3 className="text-brand text-sm">4848747848</h3>
+            <h3 className="text-brand text-sm">{student.studentNumber}</h3>
             <h1 className="text-2xl font-semibold">{student.name}</h1>
-            <h3 className="text-brand">EM Student</h3>
+            {courses.some(
+              (course) =>
+                course.students.filter((item) => item.id === student.id).length
+            ) ? (
+              <h3 className="text-brand">EM Student</h3>
+            ) : (
+              <h3 className="text-brand">Free plan</h3>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-4 w-full">

@@ -40,7 +40,7 @@ async function CoursePage({ params: { courseId, lang } }: Props) {
       }}
       className="min-h-screen">
       <DashboardHeader courseName={course?.englishTitle} />
-      <CourseBody course={course} />
+      <CourseBody course={course} user={user} />
     </div>
   );
 }

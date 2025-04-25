@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useModal } from "@/hooks/useModalStore";
 import { truncate } from "@/lib/truncate";
 import { ExtendedUser } from "@/types/next-auth";
 import { CourseWithVideosProgress } from "@/types/types";
@@ -11,14 +14,18 @@ import Link from "next/link";
 interface Props {
   course: CourseWithVideosProgress;
   user: User | null;
+  isArabic: boolean;
+  dict: any;
 }
 
-function StudentCourseCard({ course, user }: Props) {
+function StudentCourseCard({ course, user, isArabic, dict }: Props) {
   const doneVideos = course?.videos.filter(
     (videos) => !!videos.progress.length
   ).length;
 
   const progress = Math.round((doneVideos / course.videos.length) * 100);
+
+  const { onOpen } = useModal();
 
   return (
     <div className="w-full max-w-sm rounded-md bg-gradient-to-b from-[#40414F]/35 to-[#1B1B1F]/35">
@@ -46,16 +53,22 @@ function StudentCourseCard({ course, user }: Props) {
           </div>
         </div>
         <div className="space-y-2">
-          <h1 className="text-lg font-semibold">{course.englishTitle}</h1>
-          <p className="text-[#CCCCCC]">{truncate(course.englishDesc, 80)}</p>
+          <h1 className="text-lg font-semibold">
+            {isArabic ? course.arabicTitle : course.englishTitle}
+          </h1>
+          <p className="text-[#CCCCCC]">
+            {truncate(isArabic ? course.arabicDesc : course.englishDesc, 80)}
+          </p>
           {!!course.students.length ? (
             <div className="space-y-1">
               <Progress value={progress} />
               <h1 className="text-brand">{progress}%</h1>
             </div>
           ) : (
-            <Button className="radialGradient rounded-full text-white BuyCourseShadows p-0 px-7 h-8">
-              Get with{" "}
+            <Button
+              onClick={() => onOpen("verifyNowLater", { dict })}
+              className="radialGradient rounded-full text-white BuyCourseShadows p-0 px-7 h-8">
+              {isArabic ? "احصل عليها ب" : "Get with"}{" "}
               {user?.phone?.startsWith("+213")
                 ? `${course.priceInDa} DA`
                 : `${course.priceInEuro}$`}

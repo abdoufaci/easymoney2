@@ -32,9 +32,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       // Allow Oauth without email verification
-      if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id || "");
+      if (!existingUser) return false;
+
+      if (existingUser.sessions > 0 && existingUser.role !== "ADMIN") {
+        return false;
+      }
+
+      if (existingUser.sessions === 0) {
+        await db.user.update({
+          where: { id: existingUser.id },
+          data: {
+            sessions: 1,
+          },
+        });
+      }
+
+      if (account?.provider !== "credentials") return true;
 
       if (!existingUser?.emailVerified) {
         return false;
@@ -77,6 +92,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.email = token.email as string;
         session.user.isOAuth = token.isOAuth;
         session.user.image = token.image;
+        session.user.isVerified = token.isVerified;
+        session.user.studentNumber = token.studentNumber;
       }
 
       return session;
@@ -96,6 +113,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       token.image = existingUser.image;
+      token.isVerified = existingUser.VerificationStatus === "VERIFIED";
+      token.studentNumber = existingUser.studentNumber;
       return token;
     },
   },

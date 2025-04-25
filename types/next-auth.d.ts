@@ -7,6 +7,8 @@ export type ExtendedUser = {
   isTwoFactorEnabled: boolean;
   isOAuth: boolean;
   image: JsonValue;
+  isVerified: boolean;
+  studentNumber: string | null;
 } & DefaultSession["user"];
 
 declare module "next-auth" {
@@ -21,5 +23,7 @@ declare module "next-auth/jwt" {
     isTwoFactorEnabled: boolean;
     isOAuth: boolean;
     image: JsonValue;
+    isVerified: boolean;
+    studentNumber: string | null;
   }
 }

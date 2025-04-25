@@ -11,8 +11,10 @@ async function SettingsPage({ params }: any) {
   const user = await getUserById(auth?.id!);
 
   return (
-    <div className="w-full flex flex-col md:!flex-row items-center justify-center relative">
-      <h1 className="text-xl font-semibold absolute top-0 left-0">Settings</h1>
+    <div className="w-full flex flex-col gap-5 md:!flex-row items-start md:!items-center justify-center relative">
+      <h1 className="text-xl font-semibold md:!absolute top-0 left-0">
+        Settings
+      </h1>
       <SettingsCard>
         <StudentSettingsForm dict={dict} user={user} />
       </SettingsCard>

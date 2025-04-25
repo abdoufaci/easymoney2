@@ -66,12 +66,12 @@ export function NewPasswordForm({ dict }: Props) {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{dict.auth.password}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isPending}
                       placeholder={dict.auth.passwordPlaceholder}
+                      className="border-white border-[0.54px] text-white placeholder:text-white py-6 pl-5 rounded-full"
                       type="password"
                     />
                   </FormControl>
@@ -83,10 +83,10 @@ export function NewPasswordForm({ dict }: Props) {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button
-            variant={"gradient_brand"}
+            variant={"white"}
             type="submit"
             disabled={isPending}
-            className="w-full">
+            className="w-full rounded-full">
             {dict.auth.resetPassword}
           </Button>
         </form>

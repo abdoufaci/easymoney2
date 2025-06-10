@@ -37,10 +37,6 @@ function CourseCard({ course, section }: Props) {
               <VideoIcon className="h-5 w-5 text-brand" />
               <h1 className="text-sm">{course.videos.length}</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock2 className="h-5 w-5 text-brand" />
-              <h1 className="text-sm">{course.hours}</h1>
-            </div>
             <Button
               variant={course.isActive ? "active" : "hidden"}
               className="rounded-full p-0 px-4 h-6"

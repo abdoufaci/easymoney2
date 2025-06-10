@@ -2,6 +2,16 @@ import DashboardHeader from "@/components/dashboard-header";
 import { getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "EasyMoney University",
+  description: "EasyMoney University",
+  icons: {
+    icon: "/icon.png",
+    href: "/icon.png",
+  },
+};
 
 interface Props {
   children: React.ReactNode;

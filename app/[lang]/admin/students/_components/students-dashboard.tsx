@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { User } from "@prisma/client";
@@ -30,6 +30,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import StudentDetails from "./student-details";
 import { CourseWithVideos, CourseWithVideosProgress } from "@/types/types";
 import { useModal } from "@/hooks/useModalStore";
+import StudentSearch from "./student-search";
 
 interface Props {
   currentPage: number;
@@ -38,6 +39,7 @@ interface Props {
   totalStudents: number;
   studentsPerPage: number;
   courses: CourseWithVideosProgress[];
+  search: string | string[] | undefined;
 }
 
 export default function StudentDashboard({
@@ -47,21 +49,31 @@ export default function StudentDashboard({
   studentsPerPage,
   totalStudents,
   courses,
+  search,
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
   const { onOpen } = useModal();
 
   const totalPages = Math.ceil(totalStudents / studentsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      router.push(`/admin/students?page=${currentPage + 1}`);
+      router.push(
+        `${pathname}?page=${currentPage + 1}${
+          search ? `&search=${search}` : ""
+        }`
+      );
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      router.push(`/admin/students?page=${currentPage - 1}`);
+      router.push(
+        `${pathname}?page=${currentPage - 1}${
+          search ? `&search=${search}` : ""
+        }`
+      );
     }
   };
 
@@ -72,15 +84,9 @@ export default function StudentDashboard({
           <div className="flex flex-col md:!flex-row md:!items-center justify-between gap-4">
             <div className="flex items-center gap-5">
               <h1 className="text-xl font-semibold">Student</h1>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  className="pl-10 border-[#B9BEC7] rounded-full w-64 text-sm"
-                  placeholder="Search"
-                />
-              </div>
+              <StudentSearch dict={dict} />
             </div>
-            <div className="flex flex-wrap items-center gap-4">
+            {/* <div className="flex flex-wrap items-center gap-4">
               <Select>
                 <SelectTrigger className="border-[#B9BEC7] w-28">
                   <SelectValue placeholder="Show" />
@@ -121,7 +127,7 @@ export default function StudentDashboard({
                   <SelectItem value="not-verified">Not Verified</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
 
           <div className="rounded-md  overflow-hidden">
@@ -164,7 +170,7 @@ export default function StudentDashboard({
                               <AvatarImage
                                 src={
                                   //@ts-ignore
-                                  student?.image?.url || ""
+                                  student?.image?.url || student?.image || ""
                                 }
                                 alt={student.name || ""}
                                 className="object-cover"
@@ -213,7 +219,7 @@ export default function StudentDashboard({
                             </Button>
                           ) : student.VerificationStatus === "REJECTED" ? (
                             <Badge
-                              className="bg-[#F63F4B1F] text-[#F63F4B] hover:bg-[#F63F4B] hover:text-[#F63F4B] 
+                              className="bg-[#F63F4B1F] text-[#F63F4B] hover:bg-[#F63F4B1F] hover:text-[#F63F4B]
                             py-2 px-3 rounded-full flex items-center gap-2 text-xs">
                               <BadgeCheck className="w-4 h-4" />
                               <h1>Rejected</h1>
@@ -268,7 +274,10 @@ export default function StudentDashboard({
                       : "border-[#B9BEC7] hover:bg-gray-800"
                   )}
                   asChild>
-                  <Link href={`/admin/students?page=${idx + 1}`}>
+                  <Link
+                    href={`${pathname}?page=${idx + 1}${
+                      search ? `&search=${search}` : ""
+                    }`}>
                     {idx + 1}
                   </Link>
                 </Button>

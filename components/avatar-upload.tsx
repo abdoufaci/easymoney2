@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction, useTransition } from "react";
 import { deleteFiles } from "@/backend/mutations/delete-file";
 import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface AvatarImageUploadProps {
   onChange: (url?: { url: string; key: string }) => void;
@@ -88,14 +89,26 @@ export const AvatarImageUpload = ({
         {!settings && (
           <div className="w-52 h-52 rounded-full bg-black/50 absolute top-0 left-0" />
         )}
-        <Image
-          key={value.key}
-          alt="image"
-          src={value.url || ""}
-          height={600}
-          width={300}
-          className="rounded-full w-52 h-52 object-cover"
-        />
+        {settings ? (
+          <Avatar className="border-[10px] border-[#1FB4AB0F] h-52 w-52">
+            <AvatarImage
+              src={value.url ? value.url : ""}
+              className="object-cover rounded-full z-50"
+            />
+            <AvatarFallback className="bg-brand/10 cursor-pointer">
+              EM
+            </AvatarFallback>
+          </Avatar>
+        ) : (
+          <Image
+            key={value.key}
+            alt="image"
+            src={value.url || ""}
+            height={600}
+            width={300}
+            className="rounded-full w-52 h-52 object-cover"
+          />
+        )}
         {settings && (
           <Button
             onClick={() => {

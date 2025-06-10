@@ -32,10 +32,9 @@ export const ourFileRouter = {
     .onUploadComplete(() => {}),
   // This code RUNS ON YOUR SERVER after upload
   fileMessageUploader: f({
-    image: { maxFileSize: "2MB", maxFileCount: 4 },
-    video: { maxFileSize: "256MB", maxFileCount: 1 },
-    audio: { maxFileSize: "2MB", maxFileCount: 1 },
-    pdf: { maxFileSize: "2MB", maxFileCount: 1 },
+    image: { maxFileSize: "8MB", maxFileCount: 4 },
+    video: { maxFileSize: "256MB", maxFileCount: 4 },
+    pdf: { maxFileSize: "8MB", maxFileCount: 4 },
   })
     // Set permissions and file types for this FileRoute
     .middleware(() => handleAuth())

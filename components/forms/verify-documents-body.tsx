@@ -8,6 +8,7 @@ function VerifyDocumentsBody() {
   const dict = data?.dict;
   const student = data?.user;
 
+  //@ts-ignore
   const documents = student?.documents;
 
   return (
@@ -44,31 +45,68 @@ function VerifyDocumentsBody() {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.phoneNumber}</span>
-            <h1>{student?.phone}</h1>
+            <h1>
+              {
+                //@ts-ignore
+                student?.phone
+              }
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.JoinDate}</span>
-            <h1>{format(student?.createdAt || new Date(), "dd/MM/yyyy")}</h1>
+            <h1>
+              {format(
+                //@ts-ignore
+                student?.createdAt || new Date(),
+                "dd/MM/yyyy"
+              )}
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.country}</span>
-            <h1>{student?.country}</h1>
+            <h1>
+              {
+                //@ts-ignore
+                student?.country
+              }
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.city}</span>
-            <h1>{student?.city}</h1>
+            <h1>
+              {
+                //@ts-ignore
+                student?.city
+              }
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.adress}</span>
-            <h1>{student?.adress}</h1>
+            <h1>
+              {
+                //@ts-ignore
+                student?.adress
+              }
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.zipCode}</span>
-            <h1>{student?.zipCode}</h1>
+            <h1>
+              {
+                //@ts-ignore
+                student?.zipCode
+              }
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">{dict?.general.dateOfBirth}</span>
-            <h1>{format(student?.dateOfBirth || new Date(), "dd/MM/yyyy")}</h1>
+            <h1>
+              {format(
+                //@ts-ignore
+                student?.dateOfBirth || new Date(),
+                "dd/MM/yyyy"
+              )}
+            </h1>
           </div>
         </div>
       </div>

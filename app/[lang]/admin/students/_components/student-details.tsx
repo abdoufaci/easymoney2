@@ -1,5 +1,6 @@
 import { addStudentToCourse } from "@/backend/mutations/courses/add-student-to-course";
 import { removeStudentFromCourse } from "@/backend/mutations/courses/remove-student-from-course";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CourseWithVideos, CourseWithVideosProgress } from "@/types/types";
@@ -41,16 +42,18 @@ function StudentDetails({ dict, student, courses }: Props) {
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <div className="absolute inset-0 w-52 h-52 rounded-full bg-brand blur-xl opacity-70 -z-10"></div>
-            <Image
-              alt="avatar"
-              src={
-                //@ts-ignore
-                student?.image?.url || ""
-              }
-              height={100}
-              width={100}
-              className="object-cover w-52 h-52 rounded-full border-[10px] border-[#1FB4AB0F] z-50"
-            />
+            <Avatar className="border-[10px] bg-[#1FB4AB0F] border-[#1FB4AB0F] h-52 w-52 text-7xl">
+              <AvatarImage
+                src={
+                  //@ts-ignore
+                  student?.image?.url || student?.image || ""
+                }
+                className="object-cover rounded-full z-50"
+              />
+              <AvatarFallback className="bg-brand/10 cursor-pointer text-7xl">
+                {student?.name?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
           </div>
           <div className="space-y-1 flex flex-col items-center">
             <h3 className="text-brand text-sm">{student.studentNumber}</h3>

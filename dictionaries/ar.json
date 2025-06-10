@@ -88,7 +88,9 @@
     "zipCode": "الرمز البريدي",
     "invalidFileds": "حقول غير صالحة",
     "confirmationEmailSent": "تم إرسال بريد التأكيد",
-    "alreadyLoggedIn": "أنت مسجل الدخول بالفعل من جهاز آخر"
+    "alreadyLoggedIn": "أنت مسجل الدخول بالفعل من جهاز آخر",
+    "firstName": "الإسم",
+    "lastName": "اللقب"
   },
   "home": {
     "title": "مرحبًا بك في Easymoney"

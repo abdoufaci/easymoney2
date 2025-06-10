@@ -16,12 +16,16 @@ async function StudentsPage({
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const currentPage = searchParams.page;
+  const search = searchParams.search;
   const studentsPerPage = 8;
   const students = await getStudents(
     Number(currentPage || "1"),
-    studentsPerPage
+    studentsPerPage,
+    search ? String(search) : undefined
   );
-  const totalStudents = await getUsersCount();
+  const totalStudents = await getUsersCount(
+    search ? String(search) : undefined
+  );
   const sections = await getStudentSections();
 
   return (
@@ -33,6 +37,7 @@ async function StudentsPage({
         studentsPerPage={studentsPerPage}
         totalStudents={totalStudents}
         courses={sections.flatMap((s) => s.courses)}
+        search={search}
       />
     </div>
   );

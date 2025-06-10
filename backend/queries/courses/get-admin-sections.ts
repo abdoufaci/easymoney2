@@ -12,7 +12,7 @@ export const getAdminSections = async () => {
           },
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
       },
     },

@@ -14,7 +14,7 @@ import {
 export const navigation = (dict: any) => [
   {
     title: dict.sidebar.dashboard,
-    url: "/admin",
+    url: "/",
     icon: ChartLine,
   },
   {
@@ -39,7 +39,7 @@ export const navigation = (dict: any) => [
   },
   {
     title: dict.sidebar.payments,
-    url: "/admin/payments",
+    url: "/",
     icon: Landmark,
   },
 ];

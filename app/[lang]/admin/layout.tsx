@@ -9,6 +9,16 @@ import { poppins } from "@/app/fonts";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/data/user";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "EasyMoney University",
+  description: "EasyMoney University",
+  icons: {
+    icon: "/icon.png",
+    href: "/icon.png",
+  },
+};
 
 interface Props {
   children: React.ReactNode;

@@ -11,13 +11,11 @@ export const logout = async () => {
 
   if (!user) return;
 
-  if (user?.sessions > 0) {
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        sessions: 0,
-      },
-    });
-  }
+  await db.user.update({
+    where: { id: user.id },
+    data: {
+      sessions: 0,
+    },
+  });
   await signOut();
 };

@@ -15,7 +15,7 @@ function AddCourseButton({ section }: Props) {
   return (
     <Button
       onClick={() => onOpen("addCourse", { section })}
-      className="rounded-full h-8 w-8 p-0 flex items-center justify-center"
+      className="rounded-full h-7 w-7 p-0 flex items-center justify-center"
       variant={"addSection"}>
       <Plus className="h-4 w-4" />
     </Button>

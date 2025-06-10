@@ -88,7 +88,9 @@
     "zipCode": "Zip Code",
     "invalidFileds": "Invalid Fields",
     "confirmationEmailSent": "Confirmation email sent !",
-    "alreadyLoggedIn": "you are already logged in with another device"
+    "alreadyLoggedIn": "you are already logged in with another device",
+    "firstName": "First Name",
+    "lastName": "Last Name"
   },
   "home": {
     "title": "English"

@@ -14,26 +14,23 @@ interface Props {
       })
     | null;
   user?: User | null;
+  videoId: string;
+  video: {
+    otp: any;
+    playbackInfo: any;
+  };
 }
 
-function CourseBody({ course, user }: Props) {
-  const [selectedVideo, setSelectedVideo] = useState(
-    course?.videos[0].videoId || ""
-  );
-
+function CourseBody({ course, user, videoId, video }: Props) {
   return (
     <div className="grid grid-cols-1 md:!grid-cols-[60%_40%] gap-20 md:!gap-7 px-10">
       <CourseVideo
         course={course}
-        selectedVideo={selectedVideo}
-        setSelectedVideo={setSelectedVideo}
+        video={video}
         user={user}
+        videoId={videoId}
       />
-      <CourseNavigation
-        videos={course?.videos || []}
-        selectedVideo={selectedVideo}
-        setSelectedVideo={setSelectedVideo}
-      />
+      <CourseNavigation videos={course?.videos || []} videoId={videoId} />
     </div>
   );
 }

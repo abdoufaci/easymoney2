@@ -15,7 +15,7 @@ async function CoursesPage() {
               <h1 className="text-lg font-medium">{section.title}</h1>
               <AddCourseButton section={section} />
             </div>
-            <div className="flex items-center gap-5">
+            <div className="flex flex-wrap items-center gap-5">
               {section.courses.map((course) => (
                 <CourseCard key={course.id} course={course} section={section} />
               ))}

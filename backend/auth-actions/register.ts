@@ -9,6 +9,7 @@ import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
 import { linkReservations } from "../mutations/link-reservations";
+import { v4 } from "uuid";
 
 export const register = async (
   values: z.infer<typeof RegisterSchema>,
@@ -20,7 +21,7 @@ export const register = async (
     return { error: dict.auth.invalidFields };
   }
 
-  const { email, name, password } = validatedFields.data;
+  const { email, firstName, lastName, password } = validatedFields.data;
   const salt = await bcrypt.genSalt(10);
 
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -33,9 +34,14 @@ export const register = async (
 
   const user = await db.user.create({
     data: {
-      name,
+      name: firstName + " " + lastName,
       email,
       password: hashedPassword,
+      SupportGroup: {
+        create: {
+          id: v4(),
+        },
+      },
     },
   });
 

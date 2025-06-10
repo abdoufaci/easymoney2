@@ -6,6 +6,7 @@ import { getUserById } from "./data/user";
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
 import { getAccountByUserId } from "./data/account";
 import { linkReservations } from "./backend/mutations/link-reservations";
+import { deleteSessionData } from "./backend/auth-actions/delte-session-user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -36,19 +37,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const existingUser = await getUserById(user.id || "");
       if (!existingUser) return false;
 
-      if (existingUser.sessions > 0 && existingUser.role !== "ADMIN") {
-        return false;
-      }
+      if (account?.provider !== "credentials") {
+        const FIVE_HOURS = 5 * 60 * 60 * 1000; // milliseconds
+        const now = Date.now();
+        const lastUpdated = new Date(existingUser.updatedAt).getTime();
+        if (
+          existingUser.sessions > 0 &&
+          existingUser.role !== "ADMIN" &&
+          now - lastUpdated < FIVE_HOURS
+        ) {
+          return false;
+        }
 
-      if (existingUser.sessions === 0) {
         await db.user.update({
           where: { id: existingUser.id },
           data: {
             sessions: 1,
           },
         });
+        return true;
       }
-      if (account?.provider !== "credentials") return true;
 
       if (!existingUser?.emailVerified) {
         return false;
@@ -106,6 +114,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       const existingAccount = await getAccountByUserId(existingUser.id);
 
+      const now = Date.now() / 1000; // seconds
+      if (token.exp && token.exp < now) {
+        // Session expired
+        try {
+          await deleteSessionData(existingUser.id);
+        } catch (error) {
+          console.error("Error updating user after session expiration:", error);
+        }
+      }
+
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
       token.email = existingUser.email;
@@ -118,6 +136,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 60 * 60 * 5 },
   ...authConfig,
 });

@@ -29,7 +29,7 @@ const buttonVariants = cva(
         dark_brand: "bg-brand/95 text-white hover:bg-brand",
         brand: "bg-brand/90 text-white hover:bg-brand",
         addSection:
-          "bg-[#D9D9D91A] text-[#1FB4AB] border border-[#1FB4AB] hover:bg-[#D9D9D91A]",
+          "bg-[#D9D9D91A] text-[#1FB4AB] border border-[#1FB4AB4A] hover:bg-[#D9D9D91A]",
         gradient_brand: "bg-brand/90 text-white hover:bg-brand",
         delete:
           "border border-[#FF3B30] hover:bg-[#FF3B30] hover:text-white text-[#FF3B30] bg-transparent",
@@ -37,6 +37,9 @@ const buttonVariants = cva(
         active: "bg-[#24C26D42] text-[#24C26D]",
         hidden: "bg-[#FAD81642] text-[#FAD816]",
         expand: "bg-black/50 hover:bg-black/80 text-[#5ae33e]",
+        open: "bg-[#11C86638] text-[#11C866] hover:bg-[#11C86638]",
+        close: "bg-[#FF000038] text-[#FF0000] hover:bg-[#FF000038]",
+        private: "bg-[#C88E113D] text-[#C88E11] hover:bg-[#C88E113D]",
       },
       size: {
         default: "h-9 px-4 py-2",

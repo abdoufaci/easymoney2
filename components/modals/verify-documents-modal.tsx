@@ -32,7 +32,11 @@ export const VerifyDocumentsModal = () => {
 
   const onClick = async (VerificationStatus: VerificationStatus) => {
     startTransition(() => {
-      decideDocument(VerificationStatus, user)
+      decideDocument(
+        VerificationStatus,
+        //@ts-ignore
+        user
+      )
         .then(() => {
           toast.success("status updated successfully!");
           onClose();

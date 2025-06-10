@@ -47,11 +47,20 @@ export const login = async (
     return { success: dict?.auth?.confirmationEmailSent };
   }
 
-  if (existingUser.sessions > 0 && existingUser.role !== "ADMIN") {
+  const FIVE_HOURS = 5 * 60 * 60 * 1000; // milliseconds
+  const now = Date.now();
+  const lastUpdated = new Date(existingUser.updatedAt).getTime();
+
+  if (
+    existingUser.sessions > 0 &&
+    existingUser.role !== "ADMIN" &&
+    existingUser.updatedAt &&
+    now - lastUpdated < FIVE_HOURS
+  ) {
     return { error: dict?.auth?.alreadyLoggedIn };
   }
 
-  if (existingUser.sessions === 0 && existingUser.role !== "ADMIN") {
+  if (existingUser.role !== "ADMIN") {
     await db.user.update({
       where: { id: existingUser.id },
       data: {

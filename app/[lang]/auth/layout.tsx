@@ -1,6 +1,16 @@
 import React from "react";
 import { getDictionary } from "../dictionaries";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "EasyMoney University",
+  description: "EasyMoney University",
+  icons: {
+    icon: "/icon.png",
+    href: "/icon.png",
+  },
+};
 
 async function AuthLayout({
   children,

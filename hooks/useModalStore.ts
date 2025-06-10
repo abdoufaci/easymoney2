@@ -1,5 +1,9 @@
 import { ExtendedUser } from "@/types/next-auth";
-import { CourseWithVideos, SectionWithCourses } from "@/types/types";
+import {
+  CourseWithVideos,
+  GroupWithMembersWithMessages,
+  SectionWithCourses,
+} from "@/types/types";
 import { Prisma, User } from "@prisma/client";
 import { create } from "zustand";
 
@@ -9,13 +13,22 @@ export type ModalType =
   | "editCourse"
   | "addVerificationDocuments"
   | "verifyDocuments"
-  | "verifyNowLater";
+  | "verifyNowLater"
+  | "addGroup"
+  | "addFileMessage"
+  | "addChatFileMessage"
+  | "imageExpanded"
+  | "addGroupMember";
 
 interface ModalData {
   dict?: any;
   section?: SectionWithCourses;
   course?: CourseWithVideos;
-  user?: User;
+  user?: User | ExtendedUser;
+  groupId?: string;
+  image?: string;
+  students?: User[];
+  group?: GroupWithMembersWithMessages | null;
 }
 
 interface ModalStore {

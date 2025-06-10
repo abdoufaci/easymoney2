@@ -48,12 +48,18 @@ export default function VideoCard({
         "flex items-center gap-4 rounded-full p-4 px-6 bg-[#D9D9D91A] w-full md:!w-[75%] cursor-pointer",
         isSelected && "border border-brand"
       )}>
-      <Checkbox
-        onCheckedChange={(e) => (e ? onCheck() : onDeCheck())}
-        checked={isCompleted}
-        disabled={isPending}
-        className="rounded-full data-[state=checked]:bg-brand data-[state=checked]:text-white data-[state=checked]:border-none h-5 w-5"
-      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}>
+        <Checkbox
+          onCheckedChange={(e) => (e ? onCheck() : onDeCheck())}
+          checked={isCompleted}
+          disabled={isPending}
+          className="rounded-full data-[state=checked]:bg-brand data-[state=checked]:text-white data-[state=checked]:border-none h-5 w-5"
+        />
+      </div>
       <h1>{videoName}</h1>
     </div>
   );

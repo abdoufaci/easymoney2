@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -47,12 +48,17 @@ model User {
   documents             Json?
   studentNumber         String?                @unique
   sessions              Int                    @default(0)
+  mobileSessions        Int                    @default(0)
 
-  progress VideoProgress[]
-  courses  Course[]
+  progress        VideoProgress[]
+  courses         Course[]
+  groupMessages   GroupMessage[]
+  groups          Group[]
+  supportMessages SupportMessage[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  SupportGroup SupportGroup[]
 }
 
 model Account {
@@ -132,7 +138,6 @@ model Course {
   priceInEuro  String
   priceInDa    String
   isActive     Boolean @default(false)
-  hours        String  @default("13h")
 
   videos   Video[]
   students User[]
@@ -167,6 +172,88 @@ model VideoProgress {
 
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Test {
+  id String @id @default(uuid())
+
+  text String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum GroupStatus {
+  OPEN
+  PRIVATE
+  CLOSED
+}
+
+model Group {
+  id String @id @default(uuid())
+
+  name   String
+  status GroupStatus @default(OPEN)
+
+  members  User[]
+  messages GroupMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  FILE
+  AUDIO
+}
+
+model GroupMessage {
+  id String @id @default(uuid())
+
+  message String?
+  file    Json?
+  type    MessageType @default(TEXT)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SupportGroup {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  messages SupportMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SupportMessage {
+  id String @id @default(uuid())
+
+  message String?
+  file    Json?
+  type    MessageType @default(TEXT)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  supportGroupId String
+  SupportGroup   SupportGroup @relation(fields: [supportGroupId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

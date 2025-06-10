@@ -20,6 +20,7 @@ import { Minus, Plus } from "lucide-react";
 import { addCourse } from "@/backend/mutations/courses/add-course";
 import { getChangedValues } from "@/lib/values-to-change";
 import { updateCourse } from "@/backend/mutations/courses/update-course";
+import CipherVideo from "../cipher-video";
 
 export const AddCourseSchema = z.object({
   image: z.object({
@@ -153,7 +154,7 @@ export function AddCourseForm({ isActive }: Props) {
                     <div className="flex items-center gap-3 w-full relative">
                       <AvatarImageUpload
                         //@ts-ignore
-                        value={field.value}
+                        value={form.watch("image")}
                         onChange={field.onChange}
                         endpoint="imageUploader"
                         setImageToDelete={setImageToDelete}
@@ -331,6 +332,11 @@ export function AddCourseForm({ isActive }: Props) {
                               className="border-white border-[0.54px] text-white placeholder:text-white py-6 pl-5 rounded-full"
                             />
                           </div>
+                          {video.videoId && (
+                            <div className="w-full aspect-video">
+                              <CipherVideo videoId={video.videoId} />
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

@@ -68,7 +68,29 @@ input[type="number"] {
   background: linear-gradient(90deg, #1FB4AB 0%, #00FFF0 100%);
 }
 
+.followupBg {
+  background: linear-gradient(158.14deg, rgba(64, 65, 79, 0.17) 4.17%, rgba(27, 27, 31, 0.17) 94.14%);border: 0.56px solid;
+  border-image-source: linear-gradient(158.28deg, rgba(255, 255, 255, 0.08) 3.81%, rgba(255, 255, 255, 0.04) 95.31%);
+  backdrop-filter: blur(27.88726234436035px);
+  box-shadow: 0px 2.23px 2.23px 0px #00000040;
+}
 
+.sidebarBg {
+  background: linear-gradient(158.14deg, rgba(27, 27, 31, 0.17) 94.14%, rgba(27, 27, 31, 0.17) 94.14%);border: 0.56px solid;
+  border-image-source: linear-gradient(158.28deg, rgba(255, 255, 255, 0.08) 3.81%, rgba(255, 255, 255, 0.04) 95.31%);
+  backdrop-filter: blur(27.88726234436035px);
+  box-shadow: 0px 2.23px 2.23px 0px #00000040;
+}
+
+.inputBg {
+  box-shadow: 0px 2.38px 1.79px 0px #0015340D;
+  backdrop-filter: blur(19.600000381469727px)
+}
+
+.message {
+  box-shadow: 0px 3.06px 3.06px 0px #0000000D;
+
+}
 
 @layer base {
   :root {

@@ -15,6 +15,8 @@ async function AdminPage() {
     redirect("/");
   }
 
+  redirect("/admin/courses");
+
   return <div>AdminPage</div>;
 }
 

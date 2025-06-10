@@ -87,14 +87,15 @@ export function StudentSettingsForm({ dict, user }: Props) {
           />
           {user?.VerificationStatus != "VERIFIED" && (
             <Button
-              onClick={() =>
-                user?.VerificationStatus === "NOT_VERIFIED" &&
-                onOpen("addVerificationDocuments", { dict })
-              }
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onOpen("addVerificationDocuments", { dict });
+              }}
               variant={"brand"}
               size={"xl"}
               className="rounded-full w-full">
-              {user?.VerificationStatus === "NOT_VERIFIED"
+              {user?.VerificationStatus !== "PENDING"
                 ? dict.settings.verifyAccount
                 : dict.settings.processingVerification}
             </Button>

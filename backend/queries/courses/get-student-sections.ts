@@ -26,6 +26,9 @@ export const getStudentSections = async () => {
                 },
               },
             },
+            orderBy: {
+              createdAt: "asc",
+            },
           },
           students: {
             where: {
@@ -33,7 +36,13 @@ export const getStudentSections = async () => {
             },
           },
         },
+        orderBy: {
+          createdAt: "asc",
+        },
       },
+    },
+    orderBy: {
+      createdAt: "asc",
     },
   });
 };

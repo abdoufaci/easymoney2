@@ -38,7 +38,7 @@ export function NavMain({
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
   const type = searchParams.get("type");
-  const MainPartLink = pathname.slice(3);
+  const MainPartLink = `/${pathname.split("/").slice(2, 4).join("/")}`;
   const categoryLink = `${MainPartLink}?category=${category}`;
   const typeLink = `${MainPartLink}?category=${category}`;
 

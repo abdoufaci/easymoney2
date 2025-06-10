@@ -1,6 +1,4 @@
 import { getCourseById } from "@/backend/queries/courses/get-course-by-id";
-import DashboardHeader from "@/components/dashboard-header";
-import CourseBody from "./_components/course-body";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/data/user";
 import { redirect } from "next/navigation";
@@ -30,19 +28,7 @@ async function CoursePage({ params: { courseId, lang } }: Props) {
     redirect("/");
   }
 
-  return (
-    <div
-      style={{
-        backgroundImage: "url('/blur-bg.svg')",
-        backgroundPosition: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
-      className="min-h-screen">
-      <DashboardHeader courseName={course?.englishTitle} />
-      <CourseBody course={course} user={user} />
-    </div>
-  );
+  redirect(`/course/${courseId}/${course.videos[0].videoId}`);
 }
 
 export default CoursePage;

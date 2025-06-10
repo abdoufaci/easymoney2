@@ -22,8 +22,11 @@ async function DashboardPage({ params }: any) {
           </div>
           <div className="flex flex-wrap items-start gap-5">
             {section.courses.map((course) =>
-              !!course.students.length ? (
-                <Link key={course.id} href={`/course/${course.id}`}>
+              !!course.students.length &&
+              user?.VerificationStatus === "VERIFIED" ? (
+                <Link
+                  key={course.id}
+                  href={`/course/${course.id}/${course.videos[0].videoId}`}>
                   <StudentCourseCard
                     course={course}
                     user={user}

@@ -31,7 +31,7 @@ export function AppSidebar({
   return (
     <Sidebar
       collapsible="icon"
-      className="md:!block h-[90%] my-auto ml-10 rounded-2xl"
+      className="md:!block h-[90vh] my-auto ml-10 rounded-2xl followupBg"
       {...props}>
       <SidebarHeader>
         <div className="flex flex-col items-start pl-5 justify-center gap-1">

@@ -20,6 +20,7 @@ import { User } from "@prisma/client";
 import { useModal } from "@/hooks/useModalStore";
 import { updateSettings } from "@/backend/mutations/users/update-settings";
 import { toast } from "sonner";
+import EverythingUploader from "../everything-uploader";
 
 interface Props {
   dict: any;
@@ -29,8 +30,8 @@ interface Props {
 export function StudentSettingsForm({ dict, user }: Props) {
   const [isPending, startTransition] = useTransition();
   const [imageToDelete, setImageToDelete] = useState<{
-    url: string;
-    key: string;
+    id: string;
+    type: string;
   } | null>(null);
 
   const { onOpen } = useModal();
@@ -67,15 +68,16 @@ export function StudentSettingsForm({ dict, user }: Props) {
               <FormItem>
                 <FormControl>
                   <div className="flex flex-col justify-center items-center gap-3 w-full relative">
-                    <h1>
-                      {user?.VerificationStatus != "VERIFIED"
-                        ? dict.general.notVerified
-                        : dict.general.verified}
-                    </h1>
-                    <AvatarImageUpload
+                    {user?.role !== "ADMIN" && (
+                      <h1>
+                        {user?.VerificationStatus != "VERIFIED"
+                          ? dict.general.notVerified
+                          : dict.general.verified}
+                      </h1>
+                    )}
+                    <EverythingUploader
                       value={form.watch("image")}
                       onChange={field.onChange}
-                      endpoint="logoUploader"
                       setImageToDelete={setImageToDelete}
                       settings
                     />
@@ -85,7 +87,8 @@ export function StudentSettingsForm({ dict, user }: Props) {
               </FormItem>
             )}
           />
-          {user?.VerificationStatus != "VERIFIED" && (
+
+          {user?.role != "ADMIN" && user?.VerificationStatus != "VERIFIED" && (
             <Button
               onClick={(e) => {
                 e.stopPropagation();
@@ -100,6 +103,7 @@ export function StudentSettingsForm({ dict, user }: Props) {
                 : dict.settings.processingVerification}
             </Button>
           )}
+
           <FormField
             control={form.control}
             name="name"

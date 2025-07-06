@@ -24,13 +24,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { User } from "@prisma/client";
+import { User, VerificationStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import StudentDetails from "./student-details";
 import { CourseWithVideos, CourseWithVideosProgress } from "@/types/types";
 import { useModal } from "@/hooks/useModalStore";
-import StudentSearch from "./student-search";
+import AdminSearchFilter from "@/components/admin-search-filter";
+import qs from "query-string";
+import { StudentJoinDate } from "./student-join-date";
+import { StudentDateOfBirth } from "./student-date-of-birth";
 
 interface Props {
   currentPage: number;
@@ -39,7 +42,8 @@ interface Props {
   totalStudents: number;
   studentsPerPage: number;
   courses: CourseWithVideosProgress[];
-  search: string | string[] | undefined;
+  searchParams: Record<string, string | string[] | undefined>;
+  countries: string[];
 }
 
 export default function StudentDashboard({
@@ -49,7 +53,8 @@ export default function StudentDashboard({
   studentsPerPage,
   totalStudents,
   courses,
-  search,
+  searchParams,
+  countries,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -59,21 +64,45 @@ export default function StudentDashboard({
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      router.push(
-        `${pathname}?page=${currentPage + 1}${
-          search ? `&search=${search}` : ""
-        }`
+      const url = qs.stringifyUrl(
+        {
+          url: "/admin/students",
+          query: {
+            page: currentPage + 1,
+            search: searchParams.search,
+            joinDateFrom: searchParams.joinDateFrom,
+            joinDateTo: searchParams.joinDateTo,
+            dateOfBirthFrom: searchParams.dateOfBirthFrom,
+            dateOfBirthTo: searchParams.dateOfBirthTo,
+            status: searchParams.status,
+            country: searchParams.country,
+          },
+        },
+        { skipNull: true }
       );
+      router.push(url);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      router.push(
-        `${pathname}?page=${currentPage - 1}${
-          search ? `&search=${search}` : ""
-        }`
+      const url = qs.stringifyUrl(
+        {
+          url: "/admin/students",
+          query: {
+            page: currentPage === 2 ? null : currentPage - 1,
+            search: searchParams.search,
+            joinDateFrom: searchParams.joinDateFrom,
+            joinDateTo: searchParams.joinDateTo,
+            dateOfBirthFrom: searchParams.dateOfBirthFrom,
+            dateOfBirthTo: searchParams.dateOfBirthTo,
+            status: searchParams.status,
+            country: searchParams.country,
+          },
+        },
+        { skipNull: true }
       );
+      router.push(url);
     }
   };
 
@@ -84,52 +113,89 @@ export default function StudentDashboard({
           <div className="flex flex-col md:!flex-row md:!items-center justify-between gap-4">
             <div className="flex items-center gap-5">
               <h1 className="text-xl font-semibold">Student</h1>
-              <StudentSearch dict={dict} />
+              <AdminSearchFilter dict={dict} url="/admin/students" />
             </div>
-            {/* <div className="flex flex-wrap items-center gap-4">
-              <Select>
-                <SelectTrigger className="border-[#B9BEC7] w-28">
-                  <SelectValue placeholder="Show" />
+            <div className="flex flex-wrap items-center gap-4">
+              <StudentJoinDate />
+              <StudentDateOfBirth />
+              <Select
+                onValueChange={(country) => {
+                  const url = qs.stringifyUrl(
+                    {
+                      url: "/admin/students",
+                      query: {
+                        page:
+                          searchParams.page === "1" ? null : searchParams.page,
+                        search: searchParams.search,
+                        joinDateFrom: searchParams.joinDateFrom,
+                        joinDateTo: searchParams.joinDateTo,
+                        dateOfBirthFrom: searchParams.dateOfBirthFrom,
+                        dateOfBirthTo: searchParams.dateOfBirthTo,
+                        status: searchParams.status,
+                        country: country === "default" ? null : country,
+                      },
+                    },
+                    { skipNull: true }
+                  );
+                  router.push(url);
+                }}>
+                <SelectTrigger className="border-[#B9BEC7] w-32 placeholder:text-white text-white">
+                  <SelectValue
+                    placeholder="Country"
+                    className="text-white placeholder:text-white"
+                  />
                 </SelectTrigger>
                 <SelectContent className="border-[#B9BEC7]">
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value={"default"}>Default</SelectItem>
+                  {countries.map((country) => (
+                    <SelectItem key={country} value={country}>
+                      {country}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Select>
-                <SelectTrigger className="border-[#B9BEC7] w-28">
-                  <SelectValue placeholder="Course" />
-                </SelectTrigger>
-                <SelectContent className="border-[#B9BEC7]">
-                  <SelectItem value="all">All Courses</SelectItem>
-                  <SelectItem value="web">Web Development</SelectItem>
-                  <SelectItem value="design">UI/UX Design</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select>
+              <Select
+                onValueChange={(status) => {
+                  const url = qs.stringifyUrl(
+                    {
+                      url: "/admin/students",
+                      query: {
+                        page:
+                          searchParams.page === "1" ? null : searchParams.page,
+                        search: searchParams.search,
+                        joinDateFrom: searchParams.joinDateFrom,
+                        joinDateTo: searchParams.joinDateTo,
+                        dateOfBirthFrom: searchParams.dateOfBirthFrom,
+                        dateOfBirthTo: searchParams.dateOfBirthTo,
+                        country: searchParams.country,
+                        status: status === "default" ? null : status,
+                      },
+                    },
+                    { skipNull: true }
+                  );
+                  router.push(url);
+                }}>
                 <SelectTrigger className="border-[#B9BEC7] w-32">
-                  <SelectValue placeholder="Date of Birth" />
-                </SelectTrigger>
-                <SelectContent className="border-[#B9BEC7]">
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="2000-2005">2000-2005</SelectItem>
-                  <SelectItem value="1995-2000">1995-2000</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select>
-                <SelectTrigger className="border-[#B9BEC7] w-28">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent className="border-[#B9BEC7]">
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="verified">Verified</SelectItem>
-                  <SelectItem value="not-verified">Not Verified</SelectItem>
+                  <SelectItem value={"default"}>Default</SelectItem>
+                  <SelectItem value={VerificationStatus.VERIFIED}>
+                    Verified
+                  </SelectItem>
+                  <SelectItem value={VerificationStatus.NOT_VERIFIED}>
+                    Not verified
+                  </SelectItem>
+                  <SelectItem value={VerificationStatus.PENDING}>
+                    Pending
+                  </SelectItem>
+                  <SelectItem value={VerificationStatus.REJECTED}>
+                    Rejected
+                  </SelectItem>
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
           </div>
-
           <div className="rounded-md  overflow-hidden">
             <Table>
               <TableHeader>
@@ -168,9 +234,18 @@ export default function StudentDashboard({
                           <div className="flex items-center space-x-3">
                             <Avatar>
                               <AvatarImage
+                                //@ts-ignore
                                 src={
                                   //@ts-ignore
-                                  student?.image?.url || student?.image || ""
+                                  student?.image?.id
+                                    ? `https://${
+                                        process.env
+                                          .NEXT_PUBLIC_BUNNY_CDN_HOSTNAME
+                                      }/${
+                                        //@ts-ignore
+                                        student.image.id
+                                      }`
+                                    : student?.image || ""
                                 }
                                 alt={student.name || ""}
                                 className="object-cover"
@@ -262,26 +337,40 @@ export default function StudentDashboard({
                 className="border-[#B9BEC7] hover:bg-gray-800">
                 Previous
               </Button>
-              {Array.from(Array(totalPages).keys()).map((_, idx) => (
-                <Button
-                  key={idx}
-                  variant="outline"
-                  size="sm"
-                  className={cn(
-                    "",
-                    idx + 1 === currentPage
-                      ? "bg-teal-600 border-teal-600 hover:bg-teal-700"
-                      : "border-[#B9BEC7] hover:bg-gray-800"
-                  )}
-                  asChild>
-                  <Link
-                    href={`${pathname}?page=${idx + 1}${
-                      search ? `&search=${search}` : ""
-                    }`}>
-                    {idx + 1}
-                  </Link>
-                </Button>
-              ))}
+              {Array.from(Array(totalPages).keys()).map((_, idx) => {
+                const url = qs.stringifyUrl(
+                  {
+                    url: "/admin/students",
+                    query: {
+                      page: idx + 1,
+                      search: searchParams.search,
+                      joinDateFrom: searchParams.joinDateFrom,
+                      joinDateTo: searchParams.joinDateTo,
+                      dateOfBirthFrom: searchParams.dateOfBirthFrom,
+                      dateOfBirthTo: searchParams.dateOfBirthTo,
+                      status: searchParams.status,
+                      country: searchParams.country,
+                    },
+                  },
+                  { skipNull: true }
+                );
+
+                return (
+                  <Button
+                    key={idx}
+                    variant="outline"
+                    size="sm"
+                    className={cn(
+                      "",
+                      idx + 1 === currentPage
+                        ? "bg-teal-600 border-teal-600 hover:bg-teal-700"
+                        : "border-[#B9BEC7] hover:bg-gray-800"
+                    )}
+                    asChild>
+                    <Link href={url}>{idx + 1}</Link>
+                  </Button>
+                );
+              })}
               <Button
                 variant="outline"
                 size="sm"

@@ -5,8 +5,10 @@ import { AddGroupMemberModal } from "@/components/modals/add-group-member-modal"
 import { AddGroupModal } from "@/components/modals/add-group-modal";
 import { AddFileMessageModal } from "@/components/modals/add-message-file-modal";
 import { AddSectionModal } from "@/components/modals/add-section-modal";
+import { AddTestimonyModal } from "@/components/modals/add-testimony-modal";
 import { AddVerificationDocumentsModal } from "@/components/modals/add-verification-documents-modal";
 import { AddVerificationNowLaterModal } from "@/components/modals/add-verification-now-later-modal";
+import { CheckoutCartModal } from "@/components/modals/checkout-cart-modal";
 import { ImageExpandedModal } from "@/components/modals/images-modal";
 import { VerifyDocumentsModal } from "@/components/modals/verify-documents-modal";
 import { useEffect, useState } from "react";
@@ -35,6 +37,8 @@ export const ModalProvider = () => {
       <AddFileMessageModal />
       <ImageExpandedModal />
       <AddGroupMemberModal />
+      <CheckoutCartModal />
+      <AddTestimonyModal />
     </>
   );
 };

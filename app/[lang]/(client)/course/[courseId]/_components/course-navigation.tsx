@@ -2,9 +2,8 @@
 
 import { Video, VideoProgress } from "@prisma/client";
 import VideoCard from "./video-card";
-import { Dispatch, SetStateAction } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface Props {
   videos: (Video & {
@@ -14,7 +13,7 @@ interface Props {
 }
 
 function CourseNavigation({ videos, videoId }: Props) {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="space-y-5">
@@ -23,12 +22,12 @@ function CourseNavigation({ videos, videoId }: Props) {
         {videos.map((video) => (
           <Link
             key={video.id}
-            href={`/course/${video.courseId}/${video.videoId}`}
+            href={`/course/${video.courseId}/${video.id}`}
             className="block">
             <VideoCard
               videoName={video.englishTitle}
               isCompleted={!!video.progress.length}
-              isSelected={videoId === video.videoId}
+              isSelected={videoId === video.id}
               onClick={() => {}}
               videoId={video.id}
               progress={video.progress}

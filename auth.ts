@@ -35,9 +35,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Allow Oauth without email verification
 
       const existingUser = await getUserById(user.id || "");
-      if (!existingUser) return false;
 
       if (account?.provider !== "credentials") {
+        if (!existingUser) return true;
         const FIVE_HOURS = 5 * 60 * 60 * 1000; // milliseconds
         const now = Date.now();
         const lastUpdated = new Date(existingUser.updatedAt).getTime();
@@ -57,6 +57,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
         return true;
       }
+
+      if (!existingUser) return false;
 
       if (!existingUser?.emailVerified) {
         return false;
@@ -131,6 +133,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       token.image = existingUser.image;
       token.isVerified = existingUser.VerificationStatus === "VERIFIED";
+
       token.studentNumber = existingUser.studentNumber;
       return token;
     },

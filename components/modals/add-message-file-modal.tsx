@@ -16,7 +16,10 @@ export const AddFileMessageModal = () => {
   const { isOpen, onClose, type } = useModal();
 
   const isModalOpen =
-    isOpen && (type === "addChatFileMessage" || type === "addFileMessage");
+    isOpen &&
+    (type === "addChatFileMessage" ||
+      type === "addFileMessage" ||
+      type === "addDirectChatFileMessage");
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>

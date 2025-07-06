@@ -28,7 +28,7 @@ async function CoursePage({ params: { courseId, lang } }: Props) {
     redirect("/");
   }
 
-  redirect(`/course/${courseId}/${course.videos[0].videoId}`);
+  redirect(`/course/${courseId}/${course.videos[0].id}`);
 }
 
 export default CoursePage;

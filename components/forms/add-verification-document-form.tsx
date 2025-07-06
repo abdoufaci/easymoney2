@@ -13,12 +13,12 @@ import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
-import { addSection } from "@/backend/mutations/section/add-section";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/useModalStore";
 import { VerificationDocumentsSchema } from "@/schemas";
 import { VerificationDocumentImageUpload } from "../document-image-upload";
 import { addDocuments } from "@/backend/mutations/users/add-documents";
+import EverythingUploader from "../everything-uploader";
 
 export function AddVerificationDocumentForm() {
   const [isPending, startTransition] = useTransition();
@@ -52,12 +52,12 @@ export function AddVerificationDocumentForm() {
               <FormItem>
                 <FormControl>
                   <div className="flex justify-center items-center gap-3 w-full relative">
-                    <VerificationDocumentImageUpload
-                      //@ts-ignore
+                    <EverythingUploader
                       value={field.value}
                       onChange={field.onChange}
-                      endpoint="logoUploader"
-                      src="/upload-document-1.svg"
+                      setImageToDelete={() => {}}
+                      imageUrl="/upload-document-1.svg"
+                      documentVerification
                     />
                   </div>
                 </FormControl>
@@ -72,12 +72,12 @@ export function AddVerificationDocumentForm() {
               <FormItem>
                 <FormControl>
                   <div className="flex justify-center items-center gap-3 w-full relative">
-                    <VerificationDocumentImageUpload
-                      //@ts-ignore
+                    <EverythingUploader
                       value={field.value}
                       onChange={field.onChange}
-                      endpoint="logoUploader"
-                      src="/upload-document-2.svg"
+                      setImageToDelete={() => {}}
+                      imageUrl="/upload-document-2.svg"
+                      documentVerification
                     />
                   </div>
                 </FormControl>

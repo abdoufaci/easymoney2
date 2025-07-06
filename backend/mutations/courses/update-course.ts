@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { deleteFiles } from "../delete-file";
+import { deleteEverythingFile } from "../delete-everthing-file";
 
 export const updateCourse = async (
   data: Partial<{
@@ -28,8 +29,8 @@ export const updateCourse = async (
   }[],
   isActive: boolean,
   imageToDelete: {
-    url: string;
-    key: string;
+    id: string;
+    type: string;
   } | null
 ) => {
   const videosToAdd = data.videos
@@ -44,7 +45,7 @@ export const updateCourse = async (
   }
 
   if (imageToDelete) {
-    await deleteFiles([imageToDelete]);
+    await deleteEverythingFile(imageToDelete);
   }
 
   await db.course.update({

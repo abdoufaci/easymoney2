@@ -2,9 +2,11 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import db from "@/lib/db";
+import { v4 } from "uuid";
 
 // IMPORTANT: Replace with your actual IPN Secret Key from NOWPayments dashboard
-const NOWPAYMENTS_IPN_SECRET = process.env.NOW_PAYMENT_SECRET_KEY!; // Use environment variable!
+const NOWPAYMENTS_IPN_SECRET = process.env.NOW_PAYMENT_IPN_KEY!; // Use environment variable!
 
 export async function POST(req: NextRequest) {
   try {
@@ -53,14 +55,21 @@ export async function POST(req: NextRequest) {
       price_amount,
       price_currency,
       invoice_id,
+      order_description,
       // ... other fields from NOWPayments
     } = paymentData;
 
-    console.log(`NOWPayments Webhook Received:`);
+    const userId = order_id;
     console.log(`  Payment ID: ${payment_id}`);
-    console.log(`  Status: ${payment_status}`);
-    console.log(`  Order ID: ${order_id}`);
     console.log(`  Amount: ${price_amount} ${price_currency}`);
+    const coursesMatch = order_description.match(/courses=([^;]*)/);
+    const followupMatch = order_description.match(/followup=(\d)/);
+
+    const courseIds: string[] = coursesMatch?.[1]?.split(",") || [];
+    const isFollowup = followupMatch?.[1] === "1";
+
+    console.log("courseIds:", courseIds);
+    console.log("isFollowup:", isFollowup);
     // console.log('Full Payload:', paymentData); // Uncomment for full debugging
 
     // --- YOUR APPLICATION LOGIC HERE ---
@@ -70,6 +79,82 @@ export async function POST(req: NextRequest) {
       case "finished":
         // Payment is finished (funds sent to payout address, or refund processed)
         // This is typically the final status after 'sending' or 'confirmed'
+        if (isFollowup) {
+          // add the followUp
+          const OpenGroup = await db.group.findFirst({
+            where: {
+              status: "OPEN",
+            },
+          });
+
+          if (!!OpenGroup) {
+            await db.group.update({
+              where: {
+                id: OpenGroup.id,
+              },
+              data: {
+                members: {
+                  connect: { id: userId },
+                },
+              },
+            });
+          } else {
+            const waitList = await db.waitList.findFirst();
+            if (!!waitList) {
+              await db.user.update({
+                where: { id: userId },
+                data: {
+                  waitList: {
+                    connect: { id: waitList.id },
+                  },
+                },
+              });
+            } else {
+              const wait = await db.waitList.create({
+                data: {
+                  id: v4(),
+                },
+              });
+              await db.user.update({
+                where: { id: userId },
+                data: {
+                  waitList: {
+                    connect: { id: wait.id },
+                  },
+                },
+              });
+            }
+          }
+        }
+        if (!!courseIds.length) {
+          await db.user.update({
+            where: {
+              id: userId,
+            },
+            data: {
+              courses: {
+                connect: courseIds.map((id) => ({ id })),
+              },
+            },
+          });
+        }
+
+        await db.payment.create({
+          data: {
+            paymentId: `${payment_id}`,
+            userId,
+            price: `${price_amount}`,
+            status:
+              !!courseIds.length && isFollowup
+                ? "BOTH"
+                : !!courseIds.length
+                ? "COURSE"
+                : "FOLLOWUP",
+            courses: {
+              connect: courseIds.map((id) => ({ id })),
+            },
+          },
+        });
         console.log(`Payment ${payment_id} (Order ${order_id}) is finished.`);
         break;
       default:

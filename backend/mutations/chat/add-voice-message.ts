@@ -9,20 +9,22 @@ export const addVoiceMessage = async ({
   groupId,
   file,
   isChat = false,
+  isDirectChat = false,
 }: {
   groupId: string;
   file: {
-    url: string;
-    key: string;
+    id: string;
+    type: string;
   };
   isChat?: boolean;
+  isDirectChat?: boolean;
 }) => {
   const user = await currentUser();
 
   console.log("Adding voice message [server]");
 
-  if (isChat) {
-    await db.supportGroup.update({
+  if (isDirectChat) {
+    await db.directGroup.update({
       where: { id: groupId },
       data: {
         messages: {
@@ -36,18 +38,34 @@ export const addVoiceMessage = async ({
       },
     });
   } else {
-    await db.group.update({
-      where: { id: groupId },
-      data: {
-        messages: {
-          create: {
-            userId: user?.id || "",
-            type: "AUDIO",
-            file,
+    if (isChat) {
+      await db.supportGroup.update({
+        where: { id: groupId },
+        data: {
+          messages: {
+            create: {
+              userId: user?.id || "",
+              type: "AUDIO",
+              file,
+            },
+          },
+          id: groupId,
+        },
+      });
+    } else {
+      await db.group.update({
+        where: { id: groupId },
+        data: {
+          messages: {
+            create: {
+              userId: user?.id || "",
+              type: "AUDIO",
+              file,
+            },
           },
         },
-      },
-    });
+      });
+    }
   }
 
   revalidatePath("/");

@@ -47,7 +47,7 @@ function CourseVideo({ course, video, videoId }: Props) {
               //@ts-ignore
               `/course/${course?.videos[indexOfSelectedVideo - 1].courseId}/${
                 //@ts-ignore
-                course?.videos[indexOfSelectedVideo - 1].videoId
+                course?.videos[indexOfSelectedVideo - 1].id
               }`
             )
           }
@@ -62,7 +62,7 @@ function CourseVideo({ course, video, videoId }: Props) {
               //@ts-ignore
               `/course/${course?.videos[indexOfSelectedVideo + 1].courseId}/${
                 //@ts-ignore
-                course?.videos[indexOfSelectedVideo + 1].videoId
+                course?.videos[indexOfSelectedVideo + 1].id
               }`
             )
           }

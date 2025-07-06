@@ -6,12 +6,13 @@ import { z } from "zod";
 import { deleteFiles } from "../delete-file";
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { deleteEverythingFile } from "../delete-everthing-file";
 
 export const updateSettings = async (
   data: z.infer<typeof StudentSettingsSchema>,
   imageToDelete: {
-    url: string;
-    key: string;
+    id: string;
+    type: string;
   } | null
 ) => {
   const user = await currentUser();
@@ -21,7 +22,7 @@ export const updateSettings = async (
   }
 
   if (imageToDelete) {
-    await deleteFiles([imageToDelete]);
+    await deleteEverythingFile(imageToDelete);
   }
 
   await db.user.update({

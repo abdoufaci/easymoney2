@@ -34,9 +34,15 @@ function ChatCard({ group }: Props) {
       <div className="flex items-start gap-3">
         <Avatar className="h-12 w-12">
           <AvatarImage
+            //@ts-ignore
             src={
               //@ts-ignore
-              group.user?.image?.url || group.user?.image || ""
+              group.user?.image?.id
+                ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${
+                    //@ts-ignore
+                    group.user.image.id
+                  }`
+                : group.user?.image || ""
             }
             className="object-cover"
           />

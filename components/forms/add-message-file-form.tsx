@@ -13,7 +13,6 @@ import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
-import { addSection } from "@/backend/mutations/section/add-section";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/useModalStore";
 import { MessageFileUpload } from "../message-file-upload";
@@ -22,11 +21,8 @@ import { addFileMessage } from "@/backend/mutations/chat/add-file-message";
 export const AddMessageFileSchema = z.object({
   files: z.array(
     z.object({
-      url: z.string(),
-      key: z.string(),
+      id: z.string(),
       type: z.string(),
-      size: z.string(),
-      name: z.string(),
     })
   ),
 });
@@ -36,6 +32,7 @@ export function AddMessageFileForm() {
   const { onClose, data, type } = useModal();
 
   const isChat = type === "addChatFileMessage";
+  const isDirectChat = type === "addDirectChatFileMessage";
 
   const { groupId } = data;
 
@@ -45,7 +42,7 @@ export function AddMessageFileForm() {
 
   const onSubmit = (data: z.infer<typeof AddMessageFileSchema>) => {
     startTransition(() => {
-      addFileMessage({ data, groupId: groupId || "", isChat })
+      addFileMessage({ data, groupId: groupId || "", isChat, isDirectChat })
         .then(() => {
           onClose();
           toast.success("Files added successfully");

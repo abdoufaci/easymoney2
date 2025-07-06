@@ -24,7 +24,7 @@ function CourseCard({ course, section }: Props) {
         alt="course"
         src={
           //@ts-ignore
-          course?.image?.url || ""
+          `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${course.image?.id}`
         }
         height={500}
         width={500}

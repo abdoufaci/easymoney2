@@ -42,6 +42,11 @@ export const register = async (
           id: v4(),
         },
       },
+      directGroups: {
+        create: {
+          id: v4(),
+        },
+      },
     },
   });
 

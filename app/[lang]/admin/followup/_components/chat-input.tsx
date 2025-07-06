@@ -24,9 +24,10 @@ export const ChatInputFormSchema = z.object({
 interface Props {
   groupId: string;
   isChat?: boolean;
+  isDirectChat?: boolean;
 }
 
-function ChatInput({ groupId, isChat = false }: Props) {
+function ChatInput({ groupId, isChat = false, isDirectChat = false }: Props) {
   const { onOpen } = useModal();
   const user = useCurrentUser();
   const [isPending, startTransition] = useTransition();
@@ -51,7 +52,7 @@ function ChatInput({ groupId, isChat = false }: Props) {
       return;
     }
     startTransition(async () => {
-      addMessage({ data: { message }, groupId, isChat })
+      addMessage({ data: { message }, groupId, isChat, isDirectChat })
         .then(() => {
           form.reset();
         })
@@ -69,25 +70,46 @@ function ChatInput({ groupId, isChat = false }: Props) {
       setUploadAudio(false);
       const uploadAudioFunction = async () => {
         const files = [new File([recordingBlob], "test.webm")];
-        const res = await uploadFiles("fileMessageUploader", {
-          files,
-        });
+        try {
+          toast.loading("Uploading files...", { id: "uploading" });
+          const formData = new FormData();
+          for (const file of files) {
+            formData.append("imageFile", file); // Same name as <input name="videos">
+          }
 
-        console.log("Audio uploaded:", res);
-        startTransition(async () => {
-          addVoiceMessage({
-            file: {
-              url: res[0].ufsUrl,
-              key: res[0].key,
-            },
-            groupId,
-            isChat,
-          })
-            .then(() => {
-              form.reset();
-            })
-            .catch((error) => toast.error("Failed to send message"));
-        });
+          const response = await fetch("/api/upload-everything", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          const res = data.files[0];
+
+          if (response.ok) {
+            console.log("Audio uploaded:", res);
+            startTransition(async () => {
+              addVoiceMessage({
+                file: {
+                  id: res.id,
+                  type: res.type,
+                },
+                groupId,
+                isChat,
+                isDirectChat,
+              })
+                .then(() => {
+                  form.reset();
+                })
+                .catch((error) => toast.error("Failed to send message"));
+            });
+          }
+        } catch (err) {
+          console.log({ err });
+          toast.error("An unexpected error occurred.");
+        } finally {
+          toast.dismiss("uploading");
+        }
       };
 
       uploadAudioFunction();
@@ -146,7 +168,9 @@ function ChatInput({ groupId, isChat = false }: Props) {
                             type="button"
                             onClick={() =>
                               onOpen(
-                                isChat
+                                isDirectChat
+                                  ? "addDirectChatFileMessage"
+                                  : isChat
                                   ? "addChatFileMessage"
                                   : "addFileMessage",
                                 { groupId, user }

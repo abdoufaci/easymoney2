@@ -37,7 +37,9 @@
     "chat": "الدردشة",
     "followup": "المتابعة",
     "students": "الطلاب",
-    "payments": "المدفوعات"
+    "payments": "المدفوعات",
+    "testimonials": "الشهادات",
+    "directChat": "الدعم"
   },
   "auth": {
     "register": "انشاء حساب",

@@ -5,7 +5,7 @@ import { useModal } from "@/hooks/useModalStore";
 import Image from "next/image";
 
 export const ImageExpandedModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data, onOpen } = useModal();
 
   const isModalOpen = isOpen && type === "imageExpanded";
 
@@ -13,14 +13,27 @@ export const ImageExpandedModal = () => {
     return;
   }
 
-  const { image } = data;
+  const { image, isUploadthing, user, dict } = data;
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isModalOpen}
+      onOpenChange={() =>
+        isUploadthing
+          ? onOpen("verifyDocuments", {
+              user,
+              dict,
+            })
+          : onClose()
+      }>
       <DialogContent className="bg-transparent outline-none border-none shadow-none text-black w-full max-w-xl [&>button]:hidden">
         <DialogHeader className="py-2 hidden"></DialogHeader>
         <Image
-          src={image || ""}
+          src={
+            image?.includes("gz4kd9hgc7.ufs.sh") || image?.includes("utfs.io")
+              ? image || ""
+              : `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${image}`
+          }
           alt="chat-image"
           layout="intrinsic"
           width={300}

@@ -21,11 +21,12 @@ import { addCourse } from "@/backend/mutations/courses/add-course";
 import { getChangedValues } from "@/lib/values-to-change";
 import { updateCourse } from "@/backend/mutations/courses/update-course";
 import CipherVideo from "../cipher-video";
+import EverythingUploader from "../everything-uploader";
 
 export const AddCourseSchema = z.object({
   image: z.object({
-    key: z.string(),
-    url: z.string(),
+    id: z.string(),
+    type: z.string(),
   }),
   englishTitle: z.string(),
   arabicTitle: z.string(),
@@ -54,8 +55,8 @@ export function AddCourseForm({ isActive }: Props) {
     { englishTitle: string; arabicTitle: string; videoId: string; id: string }[]
   >([]);
   const [imageToDelete, setImageToDelete] = useState<{
-    url: string;
-    key: string;
+    id: string;
+    type: string;
   } | null>(null);
 
   const { section, course } = data;
@@ -152,11 +153,9 @@ export function AddCourseForm({ isActive }: Props) {
                 <FormItem>
                   <FormControl>
                     <div className="flex items-center gap-3 w-full relative">
-                      <AvatarImageUpload
-                        //@ts-ignore
+                      <EverythingUploader
                         value={form.watch("image")}
                         onChange={field.onChange}
-                        endpoint="imageUploader"
                         setImageToDelete={setImageToDelete}
                       />
                     </div>

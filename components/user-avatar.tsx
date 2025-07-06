@@ -13,6 +13,7 @@ import Link from "next/link";
 import { logout } from "@/backend/auth-actions/logout";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { updateSession } from "@/backend/mutations/users/update-session";
 
 interface Props {
   user?: ExtendedUser;
@@ -30,7 +31,11 @@ function UserAvatar({ user }: Props) {
             <div className="absolute inset-0 w-12 h-12 rounded-full bg-brand blur-xl opacity-70"></div>
             <Avatar className="border-2 border-[#1FB4AB70] h-12 w-12">
               <AvatarImage
-                src={user?.image.url || ""}
+                src={
+                  user?.image?.id
+                    ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${user.image.id}`
+                    : user?.image || ""
+                }
                 className="object-cover"
               />
               <AvatarFallback className="bg-brand/10 cursor-pointer">
@@ -38,7 +43,7 @@ function UserAvatar({ user }: Props) {
               </AvatarFallback>
             </Avatar>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-1 hidden md:!block">
             <div className="flex items-center gap-2">
               <h1 className="font-semibold text-sm">{user?.name}</h1>
               {user?.role === "USER" && user?.isVerified && (
@@ -54,7 +59,11 @@ function UserAvatar({ user }: Props) {
       <DropdownMenuContent>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link
-            href={user?.role === "USER" ? "/dashboard/settings" : "/settings"}>
+            href={
+              user?.role === "USER"
+                ? "/dashboard/settings"
+                : "/dashboard/settings"
+            }>
             Settings
           </Link>
         </DropdownMenuItem>
@@ -62,7 +71,10 @@ function UserAvatar({ user }: Props) {
           disabled={isPending}
           onClick={() =>
             startTransition(() => {
-              logout().then(() => router.push("/"));
+              logout().then(async () => {
+                await updateSession(user?.id || "");
+                router.push("/");
+              });
             })
           }
           className="bg-[#FF00000F] text-[#FF0000] hover:!text-[#FF0000] hover:!bg-[#FF00000F] focus-within:bg-[#FF00000F] cursor-pointer">

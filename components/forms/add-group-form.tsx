@@ -13,7 +13,6 @@ import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
-import { addSection } from "@/backend/mutations/section/add-section";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/useModalStore";
 import { addGroup } from "@/backend/mutations/chat/add-group";

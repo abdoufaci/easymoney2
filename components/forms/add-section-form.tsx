@@ -13,7 +13,7 @@ import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
-import { addSection } from "@/backend/mutations/section/add-section";
+import { addSectionOrGroup } from "@/backend/mutations/section/add-section";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/useModalStore";
 
@@ -23,7 +23,7 @@ export const AddSectionSchema = z.object({
 
 export function AddSectionForm() {
   const [isPending, startTransition] = useTransition();
-  const { onClose } = useModal();
+  const { onClose, type } = useModal();
 
   const form = useForm<z.infer<typeof AddSectionSchema>>({
     resolver: zodResolver(AddSectionSchema),
@@ -31,7 +31,7 @@ export function AddSectionForm() {
 
   const onSubmit = (data: z.infer<typeof AddSectionSchema>) => {
     startTransition(() => {
-      addSection(data)
+      addSectionOrGroup(data, type === "addTestemonyGroup")
         .then(() => {
           toast.success("Section added !");
           onClose();
@@ -68,7 +68,7 @@ export function AddSectionForm() {
           disabled={isPending}
           size={"lg"}
           className="w-full rounded-full">
-          Add the Section
+          Add the {type === "addTestemonyGroup" ? "Group" : "Section"}
         </Button>
       </form>
     </Form>

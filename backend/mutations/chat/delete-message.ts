@@ -5,16 +5,14 @@ import { deleteFiles } from "../delete-file";
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { currentUser } from "@/lib/auth";
+import { deleteEverythingFile } from "../delete-everthing-file";
 
 export const deleteMessage = async (
   messageId: string,
   messageType: MessageType,
   file: {
-    url: string;
-    key: string;
-    size: string;
+    id: string;
     type: string;
-    name?: string;
   } | null,
   isChat: boolean
 ) => {
@@ -38,7 +36,7 @@ export const deleteMessage = async (
   }
 
   if (messageType != "TEXT" && file && message) {
-    await deleteFiles([file]);
+    await deleteEverythingFile(file);
   }
   revalidatePath("/");
 };

@@ -11,18 +11,17 @@ export const addFileMessage = async ({
   data,
   groupId,
   isChat,
+  isDirectChat,
 }: {
   data: z.infer<typeof AddMessageFileSchema>;
   groupId: string;
   isChat: boolean;
+  isDirectChat: boolean;
 }) => {
   const user = await currentUser();
   const convertedData = data.files.map((file) => ({
     file: {
-      url: file.url,
-      key: file.key,
-      size: file.size,
-      name: file.name,
+      id: file.id,
     },
     type: file.type.includes("image")
       ? MessageType.IMAGE
@@ -32,8 +31,8 @@ export const addFileMessage = async ({
     userId: user?.id || "",
   }));
 
-  if (isChat) {
-    await db.supportGroup.update({
+  if (isDirectChat) {
+    await db.directGroup.update({
       where: { id: groupId },
       data: {
         messages: {
@@ -45,16 +44,30 @@ export const addFileMessage = async ({
       },
     });
   } else {
-    await db.group.update({
-      where: { id: groupId },
-      data: {
-        messages: {
-          createMany: {
-            data: convertedData,
+    if (isChat) {
+      await db.supportGroup.update({
+        where: { id: groupId },
+        data: {
+          messages: {
+            createMany: {
+              data: convertedData,
+            },
+          },
+          id: groupId,
+        },
+      });
+    } else {
+      await db.group.update({
+        where: { id: groupId },
+        data: {
+          messages: {
+            createMany: {
+              data: convertedData,
+            },
           },
         },
-      },
-    });
+      });
+    }
   }
 
   revalidatePath("/");

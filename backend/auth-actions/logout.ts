@@ -9,6 +9,7 @@ export const logout = async () => {
   const auth = await currentUser();
   const user = await getUserById(auth?.id || "");
 
+  await signOut();
   if (!user) return;
 
   await db.user.update({
@@ -17,5 +18,4 @@ export const logout = async () => {
       sessions: 0,
     },
   });
-  await signOut();
 };

@@ -14,7 +14,9 @@ interface Props {
   };
 }
 
-async function VideoIdPage({ params: { courseId, lang, videoId } }: Props) {
+async function VideoIdPage({
+  params: { courseId, lang, videoId: vId },
+}: Props) {
   const auth = await currentUser();
   const user = await getUserById(auth?.id || "");
 
@@ -32,6 +34,8 @@ async function VideoIdPage({ params: { courseId, lang, videoId } }: Props) {
     redirect("/");
   }
 
+  const videoId = course.videos.find((v) => v.id === vId)?.videoId || "";
+
   const video = await getVideoById(videoId);
 
   return (
@@ -44,7 +48,7 @@ async function VideoIdPage({ params: { courseId, lang, videoId } }: Props) {
       }}
       className="min-h-screen">
       <DashboardHeader courseName={course?.englishTitle} />
-      <CourseBody course={course} user={user} videoId={videoId} video={video} />
+      <CourseBody course={course} user={user} videoId={vId} video={video} />
     </div>
   );
 }

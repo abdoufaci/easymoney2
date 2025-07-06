@@ -4,7 +4,7 @@ import { SquarePen } from "lucide-react";
 import Image from "next/image";
 
 function VerifyDocumentsBody() {
-  const { onClose, data } = useModal();
+  const { onClose, data, onOpen } = useModal();
   const dict = data?.dict;
   const student = data?.user;
 
@@ -20,8 +20,9 @@ function VerifyDocumentsBody() {
             <Image
               alt="avatar"
               src={
-                //@ts-ignore
-                student?.image?.url || ""
+                student?.image?.id
+                  ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${student.image.id}`
+                  : student?.image || ""
               }
               height={100}
               width={100}
@@ -112,24 +113,44 @@ function VerifyDocumentsBody() {
       </div>
       <div className="flex flex-col gap-4 w-full">
         <Image
+          onClick={() =>
+            onOpen("imageExpanded", {
+              image: documents?.document1?.url || documents?.document1?.id,
+              isUploadthing: true,
+              dict,
+              user: student,
+            })
+          }
           alt="document"
           src={
             //@ts-ignore
-            documents?.document1?.url || ""
+            documents?.document1?.url
+              ? documents?.document1?.url || ""
+              : `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${documents?.document1?.id}`
           }
           height={400}
           width={400}
-          className="w-full h-40 object-contain aspect-square"
+          className="w-full h-40 object-contain aspect-square cursor-pointer"
         />
         <Image
+          onClick={() =>
+            onOpen("imageExpanded", {
+              image: documents?.document2?.url || documents?.document2?.id,
+              isUploadthing: true,
+              dict,
+              user: student,
+            })
+          }
           alt="document"
           src={
             //@ts-ignore
-            documents?.document2?.url || ""
+            documents?.document2?.url
+              ? documents?.document2?.url || ""
+              : `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${documents?.document2?.id}`
           }
           height={400}
           width={400}
-          className="w-full h-40 object-contain aspect-square"
+          className="w-full h-40 object-contain aspect-square cursor-pointer"
         />
       </div>
     </div>

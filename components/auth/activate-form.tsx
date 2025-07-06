@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { ActivateSchema } from "@/schemas";
@@ -17,10 +16,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/backend/auth-actions/login";
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,11 +28,6 @@ import { ChevronDown } from "lucide-react";
 import { countryCodes } from "@/constants/country-codes";
 import { toast } from "sonner";
 import { ScrollArea } from "../ui/scroll-area";
-import { Calendar } from "../ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { AvatarImageUpload } from "../avatar-upload";
 import { activateAccount } from "@/backend/auth-actions/activate-account";
 import {
   Select,
@@ -46,22 +38,30 @@ import {
 } from "../ui/select";
 import { months } from "@/constants/months";
 import { years } from "@/constants/years";
+import EverythingUploader from "../everything-uploader";
+import { ExtendedUser } from "@/types/next-auth";
+import { countries } from "countries-list";
 
 interface Props {
   dict: any;
+  user?: ExtendedUser;
 }
 
-export function ActivateForm({ dict }: Props) {
+export function ActivateForm({ dict, user }: Props) {
   const pathname = usePathname();
   const pathParts = pathname?.split("/").filter(Boolean);
   const local = pathParts?.[0];
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [selectedCountry, setSelectedCountry] = useState({
-    code: "+44",
-    flag: "🇬🇧",
-    name: "United Kingdom",
+    code: "+213",
+    flag: "🇩🇿",
+    name: "Algeria (‫الجزائر‬‎)",
   });
 
   const redirectUrl = searchParams?.get("redirectUrl");
@@ -74,48 +74,27 @@ export function ActivateForm({ dict }: Props) {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const [days, setDays] = useState<number[]>([]);
 
   const form = useForm<z.infer<typeof ActivateSchema>>({
     resolver: zodResolver(ActivateSchema),
-    defaultValues: {
-      dateOfBirth: {
-        year: "",
-        month: "",
-        day: "",
-      },
-    },
   });
-
-  const dateOfBirth = form.watch("dateOfBirth");
-
-  useEffect(() => {
-    if (dateOfBirth.month && dateOfBirth.year) {
-      const year = Number.parseInt(dateOfBirth.year);
-      const month = Number.parseInt(dateOfBirth.month);
-      const daysInMonth = new Date(year, month, 0).getDate();
-
-      const daysArray = [];
-      for (let day = 1; day <= daysInMonth; day++) {
-        daysArray.push(day);
-      }
-
-      setDays(daysArray);
-    } else {
-      setDays([]);
-    }
-  }, [dateOfBirth?.month, dateOfBirth?.year]);
 
   const onSubmit = (data: z.infer<typeof ActivateSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      activateAccount(data, selectedCountry)
+      activateAccount(data, selectedCountry, user)
         .then(() => {
           toast.success("Success");
           router.push("/dashboard");
         })
-        .catch(() => toast.error("Something went wrong."));
+        .catch((err) => {
+          console.log({
+            err,
+            data,
+          });
+          toast.error("Something went wrong.");
+        });
     });
   };
 
@@ -134,12 +113,11 @@ export function ActivateForm({ dict }: Props) {
                 <FormItem>
                   <FormControl>
                     <div className="flex justify-center items-center gap-3 w-full relative">
-                      <AvatarImageUpload
-                        //@ts-ignore
-                        value={field.value}
+                      <EverythingUploader
+                        value={form.watch("image")}
                         onChange={field.onChange}
-                        endpoint="logoUploader"
                         setImageToDelete={() => {}}
+                        settings
                       />
                     </div>
                   </FormControl>
@@ -147,85 +125,113 @@ export function ActivateForm({ dict }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dateOfBirth"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <Select
-                      value={field.value.year}
-                      onValueChange={(year) =>
-                        field.onChange({
-                          ...field.value,
-                          year,
-                        })
-                      }>
-                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
-                        <SelectValue placeholder="Year" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-80">
-                        {years.map((year) => (
-                          <SelectItem key={year} value={year.toString()}>
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <Select
-                      value={field.value.month}
-                      onValueChange={(month) =>
-                        field.onChange({
-                          ...field.value,
-                          month,
-                        })
-                      }>
-                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
-                        <SelectValue placeholder="Month" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {months.map((month) => (
-                          <SelectItem key={month.value} value={month.value}>
-                            {month.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Select
-                      value={field.value.day}
-                      onValueChange={(day) =>
-                        field.onChange({ ...field.value, day })
-                      }
-                      disabled={!field.value.month || !field.value.year}>
-                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
-                        <SelectValue placeholder="Day" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {days.map((day) => (
-                          <SelectItem key={day} value={day.toString()}>
-                            {day}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {mounted && (
+              <div className="grid grid-cols-1 sm:!grid-cols-2 md:!grid-cols-3 place-items-center gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <Select
+                        key={"year"}
+                        value={field.value}
+                        onValueChange={(year) => field.onChange(year)}>
+                        <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                          <SelectValue placeholder="Year" />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-80">
+                          {years.map((year) => (
+                            <SelectItem key={year} value={`${year}`}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="month"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <Select
+                        key={"month"}
+                        value={field.value}
+                        onValueChange={(month) => field.onChange(month)}>
+                        <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                          <SelectValue placeholder="Month" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {months.map((month) => (
+                            <SelectItem
+                              key={month.value}
+                              value={`${month.value}`}>
+                              {month.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="day"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <Select
+                        key={"day"}
+                        value={field.value}
+                        onValueChange={(day) => field.onChange(day)}>
+                        <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                          <SelectValue placeholder="Day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 31 }, (_, i) => i + 1).map(
+                            (day) => (
+                              <SelectItem key={day} value={`${day}`}>
+                                {day}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="country"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder={dict.auth.country}
-                      className="border-white border-[0.54px] text-white placeholder:text-white py-6 pl-5 rounded-full"
-                    />
+                    <Select
+                      key={"country"}
+                      value={field.value}
+                      onValueChange={(country) => field.onChange(country)}>
+                      <SelectTrigger className="w-full py-5 rounded-full bg-transparent border border-white placeholder:text-white">
+                        <SelectValue
+                          placeholder={dict.auth.country}
+                          className="placeholder:text-white"
+                        />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-80">
+                        {Object.values(countries)
+                          .map((country) => country.name)
+                          .sort((a, b) => a.localeCompare(b))
+                          .map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -282,60 +288,71 @@ export function ActivateForm({ dict }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="flex gap-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="flex items-center gap-1 w-[110px] justify-between border-white border-[0.54px] 
+            {mounted && (
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="flex items-center gap-1 w-[110px] justify-between border-white border-[0.54px] 
                             text-white placeholder:text-white py-6 pl-5 rounded-full bg-transparent">
-                            <span>{selectedCountry.code}</span>
-                            <ChevronDown className="h-4 w-4 opacity-50" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="start"
-                          className="w-[200px]">
-                          <ScrollArea className="h-52">
-                            {countryCodes
-                              .sort(
-                                (a, b) =>
-                                  Number(a.code.slice(1)) -
-                                  Number(b.code.slice(1))
-                              )
-                              .map((country) => (
-                                <DropdownMenuItem
-                                  key={country.code}
-                                  onClick={() => setSelectedCountry(country)}
-                                  className="cursor-pointer">
-                                  <span>{country.name}</span>
-                                  <span className="ml-auto text-muted-foreground">
-                                    {country.code}
-                                  </span>
-                                </DropdownMenuItem>
-                              ))}
-                          </ScrollArea>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                      <Input
-                        type="tel"
-                        placeholder={dict.auth.phoneNumber}
-                        className="border-white border text-white placeholder:text-white py-6 pl-5 rounded-full flex-1"
-                        {...field}
-                        disabled={isPending}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                              <span>{selectedCountry.code}</span>
+                              <ChevronDown className="h-4 w-4 opacity-50" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="start"
+                            className="w-[200px]">
+                            <ScrollArea className="h-52">
+                              {countryCodes
+                                .sort(
+                                  (a, b) =>
+                                    Number(a.code.slice(1)) -
+                                    Number(b.code.slice(1))
+                                )
+                                .map((country) => {
+                                  if (country.code === "+213") {
+                                    console.log({
+                                      country,
+                                    });
+                                  }
+                                  return (
+                                    <DropdownMenuItem
+                                      key={country.code}
+                                      onClick={() =>
+                                        setSelectedCountry(country)
+                                      }
+                                      className="cursor-pointer">
+                                      <span>{country.name}</span>
+                                      <span className="ml-auto text-muted-foreground">
+                                        {country.code}
+                                      </span>
+                                    </DropdownMenuItem>
+                                  );
+                                })}
+                            </ScrollArea>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        <Input
+                          type="number"
+                          placeholder={dict.auth.phoneNumber}
+                          className="border-white border text-white placeholder:text-white py-6 pl-5 rounded-full flex-1"
+                          {...field}
+                          disabled={isPending}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />

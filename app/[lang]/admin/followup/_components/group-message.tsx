@@ -34,11 +34,8 @@ function GroupMessage({ message, isChat }: Props) {
 
   const file = message?.file
     ? (message.file as {
-        url: string;
-        key: string;
-        size: string;
+        id: string;
         type: string;
-        name?: string;
       })
     : null;
 
@@ -120,7 +117,17 @@ function GroupMessage({ message, isChat }: Props) {
         <Avatar className="h-12 w-12">
           <AvatarImage
             //@ts-ignore
-            src={message?.user?.image.url || message?.user?.image || ""}
+            src={
+              user?.role === "USER" && user?.id !== message.userId
+                ? "/support.svg"
+                : //@ts-ignore
+                message.user?.image?.id
+                ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${
+                    //@ts-ignore
+                    message.user.image.id
+                  }`
+                : message.user?.image || ""
+            }
             className="object-cover"
           />
           <AvatarFallback className="bg-brand/10 cursor-pointer">
@@ -138,7 +145,7 @@ function GroupMessage({ message, isChat }: Props) {
           <div
             onClick={() => {
               if (message.type === "FILE" && file) {
-                downloadUploadthingFiles([file.url]);
+                downloadUploadthingFiles([file.id]);
               }
             }}
             className={cn(
@@ -150,7 +157,7 @@ function GroupMessage({ message, isChat }: Props) {
               message.type === "FILE" && file && "cursor-pointer"
             )}>
             {message.type === "FILE" && file && (
-              <div className="flex items-start gap-4 mr-20">
+              <div className="flex items-center gap-4 mr-20">
                 <div
                   className={cn(
                     "h-12 w-12 rounded-full flex items-center justify-center",
@@ -165,33 +172,32 @@ function GroupMessage({ message, isChat }: Props) {
                   )}
                 </div>
                 <div className="space-y-0">
-                  <h1 className="text-white font-medium">
-                    {file.name || "Document"}
-                  </h1>
-                  <h5 className="text-xs text-[#E3E3E3]">{file.size} MB</h5>
+                  <h1 className="text-white font-medium">{"Document"}</h1>
                 </div>
               </div>
             )}
             {message.type === "VIDEO" && file && (
-              <MuxPlayer
-                src={file.url}
-                className="w-full max-w-xs aspect-video rounded-lg"
-              />
+              <iframe
+                key={file.id}
+                src={`https://iframe.mediadelivery.net/embed/${process.env.NEXT_PUBLIC_BUNNY_STREAM_LIBRARY_ID}/${file.id}`}
+                allow="fullscreen"
+                allowFullScreen
+                className="aspect-video w-full max-w-sm"></iframe>
             )}
             {message.type === "IMAGE" && file && (
               <Image
-                src={file.url}
+                src={`https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${file.id}`}
                 alt="chat-image"
                 layout="intrinsic"
                 width={300}
                 height={600}
                 className="w-full max-w-xs cursor-pointer"
-                onClick={() => onOpen("imageExpanded", { image: file.url })} // Open image in modal
+                onClick={() => onOpen("imageExpanded", { image: file.id })} // Open image in modal
               />
             )}
             {message.type === "AUDIO" && (
               <AudioPlayer
-                content={file?.url || ""}
+                content={`https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${file?.id}`}
                 isMyMessage={user?.id === message.userId}
               />
             )}

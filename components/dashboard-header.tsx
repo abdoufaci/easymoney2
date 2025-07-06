@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import UserAvatar from "./user-avatar";
 import Link from "next/link";
+import { getStudentChat } from "@/backend/queries/direct-chat/get-student-chat";
+import SupportSheet from "./chat/support-sheet";
 
 interface Props {
   courseName?: string;
@@ -12,11 +14,12 @@ interface Props {
 
 async function DashboardHeader({ courseName }: Props) {
   const user = await currentUser();
+  const group = await getStudentChat(user?.id || "");
 
   return (
     <div className="flex items-center justify-between sticky top-0 left-0 w-full p-10 pb-5 backdrop-blur-lg z-40">
       <div className="flex items-center gap-5">
-        <Link href={"/dashboard"}>
+        <Link href={user?.role === "ADMIN" ? "/admin" : "/dashboard"}>
           <Image
             alt="logo"
             src={"/logo.svg"}
@@ -33,11 +36,12 @@ async function DashboardHeader({ courseName }: Props) {
         )}
       </div>
       <div className="flex items-center gap-7">
-        {/* {!courseName && (
+        <SupportSheet groupId={group?.id || ""} />
+        {/* <Link href={"/followup"}>
           <Button size={"lg"} variant={"addSection"} className="rounded-full">
             Follow up
           </Button>
-        )} */}
+        </Link> */}
         <UserAvatar user={user} />
       </div>
     </div>

@@ -22,6 +22,10 @@
   }
 }
 
+.backBlur {
+  backdrop-filter: blur(21.399999618530273px)
+}
+
 .sidebarBg {
   backdrop-filter: blur(27.88726234436035px);
   box-shadow: 0px 2.23px 2.23px 0px #00000040;
@@ -55,6 +59,26 @@ input[type="number"] {
 
 .radialGradient {
   background: radial-gradient(50% 50% at 50% 50%, #1FB4AB 0%, #51E2D9 100%);
+  box-shadow: 0px 2px 1px 0px #FFFFFF40 inset;
+  box-shadow: 0px -4px 2px 0px #00000040 inset;
+  box-shadow: 0px 0px 1px 4px #FFFFFF1A;
+  box-shadow: 0px 0px 180px 0px #2979FF;
+}
+
+.successRadialGradient {
+  background: radial-gradient(50% 50% at 50% 50%, #1FB4AB 0%, #51E2D9 100%);
+  box-shadow: 0px 1.51px 0.76px 0px #FFFFFF40 inset;
+  box-shadow: 0px -3.03px 1.51px 0px #00000040 inset;
+  box-shadow: 0px 0px 0.76px 3.03px #FFFFFF1A;
+  box-shadow: 0px 0px 136.15px 0px #1FB4AB75;
+}
+
+.cancelRadialGradient {
+  background: radial-gradient(50% 50% at 50% 50%, #FF0D1D 0%, #A70D17 100%);
+  box-shadow: 0px 1.51px 0.76px 0px #FFFFFF40 inset;
+  box-shadow: 0px -3.03px 1.51px 0px #00000040 inset;
+  box-shadow: 0px 0px 0.76px 3.03px #FFFFFF1A;
+  box-shadow: 0px 0px 136.15px 0px #1FB4AB75;
 }
 
 .BuyCourseShadows {
@@ -89,7 +113,16 @@ input[type="number"] {
 
 .message {
   box-shadow: 0px 3.06px 3.06px 0px #0000000D;
+}
 
+
+.checkoutDialog {
+  background: linear-gradient(158.14deg, rgba(64, 65, 79, 0.3) 4.17%, rgba(27, 27, 31, 0.3) 94.14%),
+  linear-gradient(0deg, rgba(255, 255, 255, 0.21), rgba(255, 255, 255, 0.21));
+  border: 0.56px solid;
+  border-image-source: linear-gradient(158.28deg, rgba(255, 255, 255, 0.08) 3.81%, rgba(255, 255, 255, 0.04) 95.31%);
+  backdrop-filter: blur(54.900001525878906px);
+  box-shadow: 0px 2.23px 2.23px 0px #00000040;
 }
 
 @layer base {
@@ -129,7 +162,7 @@ input[type="number"] {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 3%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;

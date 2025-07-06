@@ -6,7 +6,10 @@ import { useModal } from "@/hooks/useModalStore";
 import { truncate } from "@/lib/truncate";
 import { cn } from "@/lib/utils";
 import { ExtendedUser } from "@/types/next-auth";
-import { CourseWithVideosProgress } from "@/types/types";
+import {
+  CourseWithVideosProgress,
+  SectionWithCourseWithVideosProgress,
+} from "@/types/types";
 import { User } from "@prisma/client";
 import { Clock2, VideoIcon } from "lucide-react";
 import Image from "next/image";
@@ -20,9 +23,10 @@ interface Props {
   user: User | null;
   isArabic: boolean;
   dict: any;
+  section: SectionWithCourseWithVideosProgress;
 }
 
-function StudentCourseCard({ course, user, isArabic, dict }: Props) {
+function StudentCourseCard({ course, user, isArabic, dict, section }: Props) {
   const doneVideos = course?.videos.filter(
     (videos) => !!videos.progress.length
   ).length;
@@ -89,7 +93,8 @@ function StudentCourseCard({ course, user, isArabic, dict }: Props) {
         alt="course"
         src={
           //@ts-ignore
-          course?.image?.url || ""
+          `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${course.image?.id}` ||
+          ""
         }
         height={500}
         width={500}
@@ -127,7 +132,9 @@ function StudentCourseCard({ course, user, isArabic, dict }: Props) {
             // </Link>
             <Button
               disabled={isPending}
-              onClick={onPay}
+              onClick={() =>
+                onOpen("checkoutCart", { cartSection: section, user })
+              }
               className="radialGradient rounded-full text-white BuyCourseShadows p-0 px-7 h-8">
               {isArabic ? "احصل عليها ب" : "Get with"}{" "}
               {user?.phone?.startsWith("+213")
@@ -136,7 +143,10 @@ function StudentCourseCard({ course, user, isArabic, dict }: Props) {
             </Button>
           ) : (
             <Button
-              onClick={() => onOpen("verifyNowLater", { dict })}
+              onClick={() =>
+                //@ts-ignore
+                onOpen("verifyNowLater", { dict, cartSection: section, user })
+              }
               className="radialGradient rounded-full text-white BuyCourseShadows p-0 px-7 h-8">
               {isArabic ? "احصل عليها ب" : "Get with"}{" "}
               {user?.phone?.startsWith("+213")

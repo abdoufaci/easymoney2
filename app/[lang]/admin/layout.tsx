@@ -10,6 +10,7 @@ import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/data/user";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { TvIcon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "EasyMoney University",
@@ -62,6 +63,9 @@ export default async function RootLayout({
         style={{
           backgroundColor: "transparent",
         }}>
+        <div className=" md:!hidden w-full flex justify-end sticky top-0 left-0 bg-black py-5">
+          <SidebarTrigger />
+        </div>
         {children}
       </SidebarInset>
     </SidebarProvider>

@@ -1,5 +1,5 @@
 import { getGroupChatById } from "@/backend/queries/chat/get-group-chat-by-id";
-import { getSupportChatById } from "@/backend/queries/chat/get-support-chat-by-id copy";
+import { getSupportChatById } from "@/backend/queries/chat/get-support-chat-by-id";
 import ChatBody from "../../followup/_components/chat-body";
 import ChatInput from "../../followup/_components/chat-input";
 

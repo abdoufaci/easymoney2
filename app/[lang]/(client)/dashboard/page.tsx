@@ -14,7 +14,7 @@ async function DashboardPage({ params }: any) {
   const user = await getUserById(auth?.id || "");
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-10">
       {sections.map((section) => (
         <div key={section.id} className="space-y-5">
           <div className="flex items-center gap-5">
@@ -26,12 +26,13 @@ async function DashboardPage({ params }: any) {
               user?.VerificationStatus === "VERIFIED" ? (
                 <Link
                   key={course.id}
-                  href={`/course/${course.id}/${course.videos[0].videoId}`}>
+                  href={`/course/${course.id}/${course.videos[0].id}`}>
                   <StudentCourseCard
                     course={course}
                     user={user}
                     isArabic={lang === "ar"}
                     dict={dict}
+                    section={section}
                   />
                 </Link>
               ) : (
@@ -41,6 +42,7 @@ async function DashboardPage({ params }: any) {
                   user={user}
                   isArabic={lang === "ar"}
                   dict={dict}
+                  section={section}
                 />
               )
             )}

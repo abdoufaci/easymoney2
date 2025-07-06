@@ -75,7 +75,12 @@ export const AvatarImageUpload = ({
           className="rounded-md w-full h-52 object-cover"
         />
         <Button
-          onClick={() => (!!data.course ? addToBin(value) : mutate(value))}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            !!data.course ? addToBin(value) : mutate(value);
+          }}
           variant={"delete"}
           className="rounded-full h-5 w-5 p-0 flex items-center justify-center bg-[#FF000029] border-none absolute top-3 right-3">
           <Minus className="h-1 w-1" />

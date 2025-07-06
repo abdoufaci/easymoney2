@@ -44,9 +44,15 @@ function StudentDetails({ dict, student, courses }: Props) {
             <div className="absolute inset-0 w-52 h-52 rounded-full bg-brand blur-xl opacity-70 -z-10"></div>
             <Avatar className="border-[10px] bg-[#1FB4AB0F] border-[#1FB4AB0F] h-52 w-52 text-7xl">
               <AvatarImage
+                //@ts-ignore
                 src={
                   //@ts-ignore
-                  student?.image?.url || student?.image || ""
+                  student?.image?.id
+                    ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${
+                        //@ts-ignore
+                        student?.image?.id
+                      }`
+                    : student?.image || ""
                 }
                 className="object-cover rounded-full z-50"
               />

@@ -37,7 +37,9 @@
     "chat": "Chat",
     "followup": "Follow up",
     "students": "Students",
-    "payments": "Payments"
+    "payments": "Payments",
+    "testimonials": "Testimonials",
+    "directChat": "Support"
   },
   "auth": {
     "register": "Register",

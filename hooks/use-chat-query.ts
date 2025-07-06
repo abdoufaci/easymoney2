@@ -1,12 +1,13 @@
 "use client";
 
 import qs from "query-string";
-import { getChat } from "@/backend/queries/chat/get-chat";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCurrentUser } from "./use-current-user";
 
-export const useChatQuery = (groupId: string, isChat: boolean) => {
-  const user = useCurrentUser();
+export const useChatQuery = (
+  groupId: string,
+  isChat: boolean,
+  isDirectChat: boolean
+) => {
   const fetchMessages = async ({ pageParam = undefined }) => {
     const url = qs.stringifyUrl(
       {
@@ -15,6 +16,7 @@ export const useChatQuery = (groupId: string, isChat: boolean) => {
           cursor: pageParam,
           groupId: groupId,
           isChat,
+          isDirectChat,
         },
       },
       { skipNull: true }
@@ -31,7 +33,6 @@ export const useChatQuery = (groupId: string, isChat: boolean) => {
     status,
     isPending,
     refetch,
-    error,
   } = useInfiniteQuery({
     queryKey: ["group-chat", groupId],
     queryFn: fetchMessages,

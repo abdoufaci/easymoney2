@@ -19,8 +19,10 @@ import { ArrowDown } from "lucide-react";
 import Link from "next/link";
 
 export const AddVerificationNowLaterModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data, onOpen } = useModal();
   const dict = data?.dict;
+  const cartSection = data?.cartSection;
+  const user = data?.user;
 
   const isModalOpen = isOpen && type === "verifyNowLater";
 
@@ -66,13 +68,12 @@ export const AddVerificationNowLaterModal = () => {
               </Link>
             </Button>
             <Button
+              onClick={() => onOpen("checkoutCart", { cartSection, user })}
               variant={"brand"}
               size={"xl"}
               className="rounded-full w-full"
               asChild>
-              <Link href={"https://t.me/EasymoneySupport2"} target="_blank">
-                {dict?.verify?.verifyLater}
-              </Link>
+              {dict?.verify?.verifyLater}
             </Button>
           </div>
         </div>

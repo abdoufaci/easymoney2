@@ -4,6 +4,10 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: "https",
+            hostname: "easymoney2.b-cdn.net",
+          },
+          {
+            protocol: "https",
             hostname: "gz4kd9hgc7.ufs.sh",
           },
           {

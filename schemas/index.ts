@@ -72,19 +72,17 @@ export const ActivateSchema = z.object({
   }),
   image: z
     .object({
-      url: z.string(),
-      key: z.string(),
+      id: z.string(),
+      type: z.string(),
     })
     .optional(),
   zipCode: z.string(),
   country: z.string(),
   city: z.string(),
   adress: z.string(),
-  dateOfBirth: z.object({
-    day: z.string(),
-    month: z.string(),
-    year: z.string(),
-  }),
+  year: z.string(),
+  month: z.string(),
+  day: z.string(),
 });
 
 export const StudentSettingsSchema = z.object({
@@ -93,19 +91,19 @@ export const StudentSettingsSchema = z.object({
   }),
   image: z
     .object({
-      url: z.string(),
-      key: z.string(),
+      id: z.string(),
+      type: z.string(),
     })
     .optional(),
 });
 
 export const VerificationDocumentsSchema = z.object({
   document1: z.object({
-    url: z.string(),
-    key: z.string(),
+    id: z.string(),
+    type: z.string(),
   }),
   document2: z.object({
-    url: z.string(),
-    key: z.string(),
+    id: z.string(),
+    type: z.string(),
   }),
 });

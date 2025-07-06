@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ModalProvider } from "@/providers/ModalProvider";
@@ -7,8 +6,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { QClientProvider } from "@/providers/query-provider";
-
-const inter = Inter({ subsets: ["latin"] });
+import NextTopLoader from "nextjs-toploader";
+import { poppins } from "./fonts";
 
 export const metadata: Metadata = {
   title: "EasyMoney University",
@@ -28,13 +27,24 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={poppins.className}>
           <QClientProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="dark"
               enableSystem
               disableTransitionOnChange>
+              <NextTopLoader
+                color="#1FB4AB"
+                initialPosition={0.08}
+                crawlSpeed={200}
+                height={3}
+                crawl={true}
+                showSpinner={true}
+                easing="ease"
+                speed={200}
+                shadow="0 0 10px #1FB4AB,0 0 5px #1FB4AB"
+              />
               {children}
               <ModalProvider />
               <Toaster richColors />

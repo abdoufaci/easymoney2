@@ -49,16 +49,29 @@ model User {
   studentNumber         String?                @unique
   sessions              Int                    @default(0)
   mobileSessions        Int                    @default(0)
+  mobileToken           String?
+  becomeStudent         DateTime?
+  lastMessage           DateTime               @default(now())
 
-  progress        VideoProgress[]
-  courses         Course[]
-  groupMessages   GroupMessage[]
-  groups          Group[]
-  supportMessages SupportMessage[]
+  progress            VideoProgress[]
+  courses             Course[]
+  groupMessages       GroupMessage[]   @relation(name: "groupSender")
+  groupMessagesSeen   GroupMessage[]   @relation(name: "groupSeen")
+  groups              Group[]
+  supportMessages     SupportMessage[] @relation(name: "supportSender")
+  supportMessagesSeen SupportMessage[] @relation(name: "supportSeen")
+  SupportGroup        SupportGroup[]
+  directMessagesSeen  DirectMessage[]  @relation("directSeen")
+  directMessages      DirectMessage[]  @relation("directSender")
+  directGroups        DirectGroup[]
+  payments            Payment[]
+  waitList            WaitList[]
+  comments            Comment[]        @relation(name: "commentSender")
+  reactedComments     Comment[]        @relation(name: "commentReactors")
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  SupportGroup SupportGroup[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  mobileLastAction DateTime @default(now()) @updatedAt
 }
 
 model Account {
@@ -119,8 +132,9 @@ model TwoFactorConfirmation {
 }
 
 model Section {
-  id    String @id @default(uuid())
-  title String
+  id     String  @id @default(uuid())
+  title  String
+  isMain Boolean @default(false)
 
   courses Course[]
 
@@ -141,6 +155,7 @@ model Course {
 
   videos   Video[]
   students User[]
+  payments Payment[]
 
   sectionId String
   Section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
@@ -156,6 +171,7 @@ model Video {
   videoId      String
 
   progress VideoProgress[]
+  comments Comment[]
 
   courseId String
   Course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -172,6 +188,28 @@ model VideoProgress {
 
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  comment String @db.Text
+
+  replies Comment[] @relation(name: "comment")
+
+  reactors User[] @relation(name: "commentReactors")
+
+  commentId String?
+  Comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade, name: "comment")
+
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "commentSender")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -216,12 +254,15 @@ enum MessageType {
 model GroupMessage {
   id String @id @default(uuid())
 
-  message String?
-  file    Json?
-  type    MessageType @default(TEXT)
+  message  String?
+  file     Json?
+  type     MessageType @default(TEXT)
+  isPinned Boolean     @default(false)
+
+  seenBy User[] @relation(name: "groupSeen")
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "groupSender")
 
   groupId String
   group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
@@ -245,15 +286,102 @@ model SupportGroup {
 model SupportMessage {
   id String @id @default(uuid())
 
-  message String?
-  file    Json?
-  type    MessageType @default(TEXT)
+  message  String?
+  file     Json?
+  type     MessageType @default(TEXT)
+  isPinned Boolean     @default(false)
+
+  seenBy User[] @relation(name: "supportSeen")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "supportSender")
+
+  supportGroupId String
+  SupportGroup   SupportGroup @relation(fields: [supportGroupId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DirectGroup {
+  id String @id @default(uuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  supportGroupId String
-  SupportGroup   SupportGroup @relation(fields: [supportGroupId], references: [id], onDelete: Cascade)
+  messages DirectMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DirectMessage {
+  id String @id @default(uuid())
+
+  message  String?
+  file     Json?
+  type     MessageType @default(TEXT)
+  isPinned Boolean     @default(false)
+
+  seenBy User[] @relation(name: "directSeen")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "directSender")
+
+  directGroupId String?
+  directGroup   DirectGroup? @relation(fields: [directGroupId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PaymentStatus {
+  COURSE
+  FOLLOWUP
+  BOTH
+}
+
+model Payment {
+  id String @id @default(uuid())
+
+  paymentId String        @unique
+  price     String
+  status    PaymentStatus
+
+  courses Course[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WaitList {
+  id String @id @default(uuid())
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TestimonyGroup {
+  id    String @id @default(uuid())
+  title String
+
+  testemonies Testimony[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimony {
+  id    String @id @default(uuid())
+  video Json
+
+  testimonyGroupId String
+  TestimonyGroup   TestimonyGroup @relation(fields: [testimonyGroupId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -6,18 +6,29 @@ import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const addSection = async (data: z.infer<typeof AddSectionSchema>) => {
+export const addSectionOrGroup = async (
+  data: z.infer<typeof AddSectionSchema>,
+  addGroup: boolean
+) => {
   const user = await currentUser();
 
   if (!user || user?.role === "USER") {
     throw new Error("Unauthorized");
   }
 
-  await db.section.create({
-    data: {
-      ...data,
-    },
-  });
+  if (addGroup) {
+    await db.testimonyGroup.create({
+      data: {
+        ...data,
+      },
+    });
+  } else {
+    await db.section.create({
+      data: {
+        ...data,
+      },
+    });
+  }
 
   revalidatePath("/");
 };

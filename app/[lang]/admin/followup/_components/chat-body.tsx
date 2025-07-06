@@ -14,9 +14,10 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 interface Props {
   groupId: string;
   isChat?: boolean;
+  isDirectChat?: boolean;
 }
 
-function ChatBody({ groupId, isChat = false }: Props) {
+function ChatBody({ groupId, isChat = false, isDirectChat = false }: Props) {
   const {
     data,
     fetchNextPage,
@@ -24,7 +25,7 @@ function ChatBody({ groupId, isChat = false }: Props) {
     isFetchingNextPage,
     isPending,
     refetch,
-  } = useChatQuery(groupId, isChat);
+  } = useChatQuery(groupId, isChat, isDirectChat);
   const currentUser = useCurrentUser();
 
   const [addedData, setAddedData] = useState<GroupMessageWithUser[]>([]);
@@ -64,7 +65,11 @@ function ChatBody({ groupId, isChat = false }: Props) {
         {
           event: "INSERT",
           schema: "public",
-          table: isChat ? "SupportMessage" : "GroupMessage",
+          table: isDirectChat
+            ? "DirectMessage"
+            : isChat
+            ? "SupportMessage"
+            : "GroupMessage",
         },
         async (payload) => {
           const { data: user } = await supabase
@@ -113,7 +118,11 @@ function ChatBody({ groupId, isChat = false }: Props) {
         {
           event: "UPDATE",
           schema: "public",
-          table: isChat ? "SupportMessage" : "GroupMessage",
+          table: isDirectChat
+            ? "DirectMessage"
+            : isChat
+            ? "SupportMessage"
+            : "GroupMessage",
         },
         (payload) => {
           const updated = payload.new as GroupMessageWithUser;
@@ -142,7 +151,11 @@ function ChatBody({ groupId, isChat = false }: Props) {
         {
           event: "DELETE",
           schema: "public",
-          table: isChat ? "SupportMessage" : "GroupMessage",
+          table: isDirectChat
+            ? "DirectMessage"
+            : isChat
+            ? "SupportMessage"
+            : "GroupMessage",
         },
         (payload) => {
           const deletedId = payload.old.id;

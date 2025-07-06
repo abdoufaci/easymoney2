@@ -1,19 +1,24 @@
 import db from "@/lib/db";
+import { v4 } from "uuid";
 
 const main = async () => {
   try {
     console.log("Adding direct group");
-    const users = await db.user.findMany({
-      where: {
-        role: "USER",
-      },
-    });
 
-    const ids = users.map((user) => ({ userId: user.id }));
+    // const users = await db.user.findMany();
 
-    await db.supportGroup.createMany({
-      data: ids,
-    });
+    // users.map(async (user) => {
+    //   await db.user.update({
+    //     where: { id: user.id },
+    //     data: {
+    //       directGroups: {
+    //         create: {
+    //           id: v4(),
+    //         },
+    //       },
+    //     },
+    //   });
+    // });
 
     console.log("adding finished");
   } catch (error) {

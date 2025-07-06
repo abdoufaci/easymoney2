@@ -4,6 +4,13 @@ import { currentUser } from "@/lib/auth";
 import axios from "axios";
 
 export const getVideoById = async (videoId: string) => {
+  if (!videoId) {
+    return {
+      otp: "",
+      playbackInfo: "",
+    };
+  }
+
   const user = await currentUser();
   const response = await axios.post(
     `https://dev.vdocipher.com/api/videos/${videoId}/otp`,

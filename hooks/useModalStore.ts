@@ -3,6 +3,7 @@ import {
   CourseWithVideos,
   GroupWithMembersWithMessages,
   SectionWithCourses,
+  SectionWithCourseWithVideosProgress,
 } from "@/types/types";
 import { Prisma, User } from "@prisma/client";
 import { create } from "zustand";
@@ -17,8 +18,12 @@ export type ModalType =
   | "addGroup"
   | "addFileMessage"
   | "addChatFileMessage"
+  | "addDirectChatFileMessage"
   | "imageExpanded"
-  | "addGroupMember";
+  | "addGroupMember"
+  | "checkoutCart"
+  | "addTestemonyGroup"
+  | "addTestimony";
 
 interface ModalData {
   dict?: any;
@@ -29,6 +34,8 @@ interface ModalData {
   image?: string;
   students?: User[];
   group?: GroupWithMembersWithMessages | null;
+  cartSection?: SectionWithCourseWithVideosProgress;
+  isUploadthing?: boolean;
 }
 
 interface ModalStore {

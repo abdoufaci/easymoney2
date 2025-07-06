@@ -77,9 +77,15 @@ export const AnimatedTooltip = ({
             onMouseMove={handleMouseMove}
             className="object-cover !m-0 !p-0 object-top rounded-full h-8 w-8 border-2 group-hover:scale-105 group-hover:z-30   relative transition duration-500">
             <AvatarImage
+              //@ts-ignore
               src={
                 //@ts-ignore
-                item?.image.url || item?.image || ""
+                item.image?.id
+                  ? `https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOSTNAME}/${
+                      //@ts-ignore
+                      item.image.id
+                    }`
+                  : item.image || ""
               }
               className="object-cover"
             />

@@ -55,6 +55,8 @@ export function StudentDateOfBirth() {
   const joinDateTo = searchParams.get("joinDateTo");
   const country = searchParams.get("country");
   const status = searchParams.get("status");
+  const price = searchParams.get("price");
+  const courses = searchParams.get("courses");
 
   const dateOfBirth = form.watch("dateOfBirth");
 
@@ -77,6 +79,8 @@ export function StudentDateOfBirth() {
           dateOfBirthTo: data.dateOfBirth?.to.toString(),
           country,
           status,
+          price,
+          courses,
         },
       },
       { skipNull: true }

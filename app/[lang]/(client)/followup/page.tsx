@@ -12,6 +12,9 @@ import { getTestimonyGroups } from "@/backend/queries/testimoney/get-testimony-g
 import type { Metadata } from "next";
 import { poppins } from "@/app/fonts";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import DownloadApp from "@/components/home/download-app";
+import { getDictionary } from "../../dictionaries";
 
 export const metadata: Metadata = {
   title: "EasyMoney University",
@@ -22,7 +25,10 @@ export const metadata: Metadata = {
   },
 };
 
-async function FollowUpPage() {
+async function FollowUpPage({ params }: any) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
   const [video, user, groups] = await Promise.all([
     getVideoById("b5532ebf91d94b1cbed09773fcd2666a"),
     currentUser(),
@@ -83,21 +89,20 @@ async function FollowUpPage() {
 
   return (
     <div className={cn("relative", poppins.className)}>
-      <DashboardHeader />
+      <DashboardHeader dict={dict} />
       <LampDemo {...video} />
       <div className="w-[80%] mx-auto space-y-5">
-        <JoinButton isOwned={!!isOwned} section={section} />
-        <div className="flex flex-col items-center justify-center gap-10 pt-40">
-          <div className="flex flex-col items-center space-y-3">
-            <h1 className="text-4xl font-medium">
-              Don’t take our word for it.
-            </h1>
-            <h3 className="bg-gradient-to-r from-[#1FB4AB] to-[#00FFF0] text-transparent bg-clip-text font-medium text-4xl">
-              Trust our student
-            </h3>
+        {user ? (
+          <JoinButton isOwned={!!isOwned} section={section} />
+        ) : (
+          <div className="flex items-center justify-center pt-24">
+            <Link href={"/auth/register"}>
+              <Button variant={"success"} className="rounded-full w-40">
+                {dict.home.getStarted}
+              </Button>
+            </Link>
           </div>
-          <StudentsTestimonies groups={groups} />
-        </div>
+        )}
         <div className="grid grid-cols-1 md:!grid-cols-2 place-content-center place-items-center gap-10">
           <Image
             alt="blur"
@@ -120,48 +125,8 @@ async function FollowUpPage() {
             width={500}
             className="w-full aspect-square object-cover"
           />
-          <div className="flex flex-col items-start justify-center gap-5 w-full h-full">
-            <Image
-              alt="warning"
-              src={"/warning.png"}
-              height={20}
-              width={20}
-              className="object-cover"
-            />
-            <h1 className="text-2xl font-medium">
-              The Follow-Up is available exclusively on the mobile app.
-            </h1>
-            <p className="text-[#DEDEDE] text-sm">
-              When you purchase this plan, you’ll need to download the mobile
-              app to access the Follow-Up section and receive daily guidance
-              from the admin.
-            </p>
-            <div className="flex flex-wrap items-center gap-6">
-              <Image
-                alt="playStore"
-                src={"/qr.svg"}
-                height={200}
-                width={200}
-                layout="intrinsic"
-              />
-              <div className="flex flex-wrap items-center gap-2">
-                <Image
-                  alt="playStore"
-                  src={"/google-play.svg"}
-                  height={150}
-                  width={150}
-                  layout="intrinsic"
-                />
-                <Image
-                  alt="appleStore"
-                  src={"/apple-store.svg"}
-                  height={150}
-                  width={150}
-                  layout="intrinsic"
-                />
-              </div>
-            </div>
-          </div>
+
+          <DownloadApp lang={lang} dict={dict} />
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ import { AddTestimonyModal } from "@/components/modals/add-testimony-modal";
 import { AddVerificationDocumentsModal } from "@/components/modals/add-verification-documents-modal";
 import { AddVerificationNowLaterModal } from "@/components/modals/add-verification-now-later-modal";
 import { CheckoutCartModal } from "@/components/modals/checkout-cart-modal";
+import { DeleteStudentModal } from "@/components/modals/delete-student-modal";
+import { EditStudentModal } from "@/components/modals/edit-sutdent-modal";
 import { ImageExpandedModal } from "@/components/modals/images-modal";
 import { VerifyDocumentsModal } from "@/components/modals/verify-documents-modal";
 import { useEffect, useState } from "react";
@@ -39,6 +41,8 @@ export const ModalProvider = () => {
       <AddGroupMemberModal />
       <CheckoutCartModal />
       <AddTestimonyModal />
+      <EditStudentModal />
+      <DeleteStudentModal />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 
-export const getTestimonyGroups = async () => {
+export const getTestimonyGroups = async (take?: number) => {
   return await db.testimonyGroup.findMany({
     include: {
       testemonies: {
@@ -12,5 +12,6 @@ export const getTestimonyGroups = async () => {
     orderBy: {
       createdAt: "asc",
     },
+    take,
   });
 };

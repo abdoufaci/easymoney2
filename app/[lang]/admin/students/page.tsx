@@ -6,6 +6,7 @@ import { getUsersCount } from "@/backend/queries/users/get-uers-count";
 import { getAdminSections } from "@/backend/queries/courses/get-admin-sections";
 import { getStudentSections } from "@/backend/queries/courses/get-student-sections";
 import { getUsersCountries } from "@/backend/queries/users/get-users-countries";
+import { getAllCourses } from "@/backend/queries/courses/get-all-courses";
 
 async function StudentsPage({
   searchParams,
@@ -26,6 +27,7 @@ async function StudentsPage({
   const totalStudents = await getUsersCount(searchParams);
   const sections = await getStudentSections();
   const countries = await getUsersCountries();
+  const courses = await getAllCourses();
 
   return (
     <div className="">
@@ -38,6 +40,7 @@ async function StudentsPage({
         courses={sections.flatMap((s) => s.courses)}
         searchParams={searchParams}
         countries={countries.map((item) => item.country || "")}
+        allCourses={courses}
       />
     </div>
   );

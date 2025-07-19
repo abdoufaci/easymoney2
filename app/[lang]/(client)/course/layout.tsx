@@ -14,7 +14,18 @@ interface Props {
 }
 
 function CourseLayout({ children }: Props) {
-  return <div>{children}</div>;
+  return (
+    <div
+      style={{
+        backgroundImage: "url('/blur-bg.svg')",
+        backgroundPosition: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}>
+      {children}
+    </div>
+  );
 }
 
 export default CourseLayout;

@@ -40,10 +40,6 @@ export default function AudioPlayer({
     wavesurfer?.playPause();
   };
 
-  console.log({
-    content,
-  });
-
   return (
     <div className="flex gap-x-3 p-[6px] items-center">
       <button onClick={onPlayPause}>

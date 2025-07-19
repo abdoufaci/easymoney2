@@ -12,6 +12,8 @@ export const FormSuccess = ({
   message,
   verification = false,
 }: FormSuccessProps) => {
+  if (!message) return null;
+
   if (verification) {
     return (
       <div className="space-y-5 w-full flex flex-col items-center">
@@ -32,7 +34,6 @@ export const FormSuccess = ({
       </div>
     );
   }
-  if (!message) return null;
 
   return (
     <div className="bg-emerald-500/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-emerald-500">

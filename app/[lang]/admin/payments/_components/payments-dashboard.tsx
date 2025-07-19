@@ -258,6 +258,9 @@ export default function PaymentsDashboard({
                           <HoverCardTrigger>
                             <Button variant={"link"} className="!p-0">
                               {truncate(payment.courses[0].englishTitle, 10)}
+                              {payment.courses[0].englishTitle.length < 10 &&
+                                payment.courses.length > 1 &&
+                                "..."}
                             </Button>
                           </HoverCardTrigger>
                           <HoverCardContent className="p-0 rounded-md w-fit bg-[#FFFFFF47] backdrop-blur-xl">
@@ -293,7 +296,7 @@ export default function PaymentsDashboard({
               {Math.min(currentPage * paymentsPerPage, totalPayments)} of{" "}
               {totalPayments} entries
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center space-x-2">
               <Button
                 variant="outline"
                 size="sm"

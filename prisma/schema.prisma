@@ -29,7 +29,7 @@ enum VerificationStatus {
 model User {
   id                    String                 @id @default(uuid())
   name                  String?
-  email                 String                 @unique
+  email                 String
   emailVerified         DateTime?
   image                 Json?
   password              String?
@@ -53,21 +53,23 @@ model User {
   becomeStudent         DateTime?
   lastMessage           DateTime               @default(now())
 
-  progress            VideoProgress[]
-  courses             Course[]
-  groupMessages       GroupMessage[]   @relation(name: "groupSender")
-  groupMessagesSeen   GroupMessage[]   @relation(name: "groupSeen")
-  groups              Group[]
-  supportMessages     SupportMessage[] @relation(name: "supportSender")
-  supportMessagesSeen SupportMessage[] @relation(name: "supportSeen")
-  SupportGroup        SupportGroup[]
-  directMessagesSeen  DirectMessage[]  @relation("directSeen")
-  directMessages      DirectMessage[]  @relation("directSender")
-  directGroups        DirectGroup[]
-  payments            Payment[]
-  waitList            WaitList[]
-  comments            Comment[]        @relation(name: "commentSender")
-  reactedComments     Comment[]        @relation(name: "commentReactors")
+  progress                         VideoProgress[]
+  courses                          Course[]
+  groupMessages                    GroupMessage[]   @relation(name: "groupSender")
+  groupMessagesSeen                GroupMessage[]   @relation(name: "groupSeen")
+  groupMessagesforwardedFromUser   GroupMessage[]   @relation(name: "forwardedFromUser")
+  groups                           Group[]
+  supportMessages                  SupportMessage[] @relation(name: "supportSender")
+  supportMessagesSeen              SupportMessage[] @relation(name: "supportSeen")
+  supportMessagesForwardedFromUser SupportMessage[] @relation(name: "supportForwardedFromUser")
+  SupportGroup                     SupportGroup[]
+  directMessagesSeen               DirectMessage[]  @relation("directSeen")
+  directMessages                   DirectMessage[]  @relation("directSender")
+  directGroups                     DirectGroup[]
+  payments                         Payment[]
+  waitList                         WaitList[]
+  comments                         Comment[]        @relation(name: "commentSender")
+  reactedComments                  Comment[]        @relation(name: "commentReactors")
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -264,6 +266,9 @@ model GroupMessage {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "groupSender")
 
+  forwardedFromUserId String?
+  forwardedFromUser   User?   @relation(fields: [forwardedFromUserId], references: [id], onDelete: Cascade, name: "forwardedFromUser")
+
   groupId String
   group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
@@ -295,6 +300,9 @@ model SupportMessage {
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, name: "supportSender")
+
+  forwardedFromUserId String?
+  forwardedFromUser   User?   @relation(fields: [forwardedFromUserId], references: [id], onDelete: Cascade, name: "supportForwardedFromUser")
 
   supportGroupId String
   SupportGroup   SupportGroup @relation(fields: [supportGroupId], references: [id], onDelete: Cascade)

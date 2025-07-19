@@ -84,7 +84,6 @@ export default function EverythingUploader({
       return () => clearTimeout(timer);
     }
   }, [value]);
-  
 
   if (value) {
     return !settings ? (

@@ -55,6 +55,7 @@ export default async function RootLayout({
         backgroundPosition: "cover",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        backgroundAttachment: "fixed",
       }}
       className="p-8 space-x-10">
       <AppSidebar dict={dict} />

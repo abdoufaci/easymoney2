@@ -10,9 +10,10 @@ import SupportSheet from "./chat/support-sheet";
 
 interface Props {
   courseName?: string;
+  dict?: any;
 }
 
-async function DashboardHeader({ courseName }: Props) {
+async function DashboardHeader({ courseName, dict }: Props) {
   const user = await currentUser();
   const group = await getStudentChat(user?.id || "");
 
@@ -36,13 +37,32 @@ async function DashboardHeader({ courseName }: Props) {
         )}
       </div>
       <div className="flex items-center gap-7">
-        <SupportSheet groupId={group?.id || ""} />
-        {/* <Link href={"/followup"}>
+        {user ? (
+          <>
+            <SupportSheet groupId={group?.id || ""} />
+            {/* <Link href={"/followup"}>
           <Button size={"lg"} variant={"addSection"} className="rounded-full">
             Follow up
           </Button>
         </Link> */}
-        <UserAvatar user={user} />
+            <UserAvatar user={user} />
+          </>
+        ) : (
+          <>
+            <Link href={"/auth/login"} className="block">
+              <Button
+                variant={"addSection"}
+                className="rounded-full md:!w-40 bg-opacity-10 bg-[#D9D9D91A]">
+                {dict?.auth?.login}
+              </Button>
+            </Link>
+            <Link href={"/auth/register"}>
+              <Button variant={"success"} className="rounded-full md:!w-40">
+                {dict?.home?.signUp}
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

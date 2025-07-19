@@ -95,6 +95,81 @@
     "lastName": "Last Name"
   },
   "home": {
-    "title": "English"
+    "signUp": "Sign Up",
+    "bannerTitle": "Learn Trading with Real Results. No Fluff. No Lies.",
+    "bannerSubTitle1": "Forget fake signals and recycled strategies.",
+    "bannerSubTitle2": "Start your journey with a proven system that works — guided by real traders, not marketers.",
+    "getStarted": "Get Started Now",
+    "why": {
+      "title": "Why Most Traders Fail?",
+      "subTitle1": "It’s not because they’re lazy.",
+      "subTitle2": "It’s not because they lack passion.",
+      "subTitle3": "It’s because they’ve been misled — again and again.",
+      "why1Title": "“Secret” Strategies That Never Work",
+      "why1SubTitle": "You’re told to follow a so-called winning formula… but it never delivers.",
+      "why1SubTitle2": "You copy the strategy, enter the trade, and still lose.",
+      "why1SubTitle3": "Why? Because markets change — and real understanding beats imitation every time.",
+      "why2Title": "No Real Guidance or Support",
+      "why2SubTitle": "You join the program, but no one’s there to answer your questions.",
+      "why2SubTitle2": "No mentor, no feedback — just empty chat groups and vague video lessons.",
+      "why2SubTitle3": "You’re left to figure things out alone, and it shows in results.",
+      "why3Title": "Learning Too Much, Earning Nothing",
+      "why3SubTitle": "You watch hours of content but still don’t know how to win trades.",
+      "why3SubTitle2": "You know the terms, the tools, the theories — but not the market.",
+      "why3SubTitle3": "Without real-world application, knowledge becomes a heavy weight, not a weapon."
+    },
+    "solutions": {
+      "title": "This Is Where Everything Changes",
+      "subTitle1": "You’ve been misled, confused, and stuck for too long.",
+      "subTitle2": "Now it’s time to trade with clarity, confidence, and control.",
+      "titleBox1": "Break the Cycle. Win for Real.",
+      "subTitle1Box1": "No more lies, fake mentors, or useless lessons.",
+      "subTitle2Box1": "Just a clear system that actually delivers results.",
+      "titleBox2": "Built to Make You Profit",
+      "subTitle1Box2": "This isn’t theory.",
+      "subTitle2Box2": "This is practical, guided training — with a proven track record.",
+      "titleBox3": "The Shift You’ve Been Waiting For",
+      "subTitle1Box3": "Enough wandering in circles.",
+      "subTitle2Box3": "Start learning in a way that actually changes your outcome.",
+      "titleBox4": "Trade with Power, Not Hope.",
+      "subTitle1Box4": "Forget luck and guesswork — they never worked anyway.",
+      "subTitle2Box4": "You’re getting structure, support, and results — or nothing."
+    },
+    "testimonials": {
+      "title": "Proof, Not Promises",
+      "subTitle": "We let our students do the talking — and the results speak for themselves.",
+      "satisfied": "Satisfied",
+      "student": "Student",
+      "followUp": "Follow-Up",
+      "groups": "Groups",
+      "watchMore": "Watch More"
+    },
+    "cta": {
+      "join": "Join Our Student",
+      "title": "One honest moment can shatter years of misinformation.",
+      "button": "Reserve your Seat"
+    },
+    "download": {
+      "title": "The Follow-Up is available exclusively on the mobile app.",
+      "subTitle": "When you purchase this plan, you’ll need to download the mobile app to access the Follow-Up section and receive daily guidance from the admin."
+    },
+    "free": {
+      "title": "The Free Course That Tells It Like It Is.",
+      "subTitle1": "Not a pitch. Not hype.",
+      "subTitle2": "Just the truth about trading, scams, and the market — as it really is.",
+      "subTitle3": "Deep insights you’ll value whether you’re new or experienced.",
+      "whatTitle": "What Will You Learn?",
+      "what1": "The fundamentals of trading and types of analysis",
+      "what2": "Stop hunts — and how you're being targeted",
+      "what3": "The halal and haram in trading, explained clearly",
+      "what4": "A breakdown of all fraud and deception tactics",
+      "what5": "The real trader vs. the online fantasy",
+      "what6": "The Ultimate system and focused follow-up"
+    }
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "testiTitle": "Don’t take our word for it.",
+    "testiSubTitle": "Trust our student"
   }
 }

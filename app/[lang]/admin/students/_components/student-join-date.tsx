@@ -55,6 +55,7 @@ export function StudentJoinDate() {
   const dateOfBirthTo = searchParams.get("dateOfBirthTo");
   const country = searchParams.get("country");
   const status = searchParams.get("status");
+  const courses = searchParams.get("courses");
 
   const joinDate = form.watch("joinDate");
 
@@ -77,6 +78,7 @@ export function StudentJoinDate() {
           dateOfBirthTo,
           country,
           status,
+          courses,
         },
       },
       { skipNull: true }

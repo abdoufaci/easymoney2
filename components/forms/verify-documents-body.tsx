@@ -38,7 +38,12 @@ function VerifyDocumentsBody() {
         <div className="flex flex-col gap-4 w-full">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-semibold">Informations</h1>
-            <SquarePen className="h-4 w-4 cursor-pointer" />
+            <SquarePen
+              onClick={() =>
+                onOpen("editStudent", { user: student, dict, isVerify: true })
+              }
+              className="h-4 w-4 cursor-pointer"
+            />
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">Email</span>

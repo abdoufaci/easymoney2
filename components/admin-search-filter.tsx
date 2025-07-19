@@ -27,6 +27,7 @@ function AdminSearchFilter({ url: pathname }: Props) {
   const country = searchParams.get("country");
   const status = searchParams.get("status");
   const price = searchParams.get("price");
+  const courses = searchParams.get("courses");
 
   const router = useRouter();
 
@@ -46,6 +47,7 @@ function AdminSearchFilter({ url: pathname }: Props) {
           dateFrom,
           dateTo,
           price,
+          courses,
         },
       },
       { skipNull: true }
@@ -57,7 +59,7 @@ function AdminSearchFilter({ url: pathname }: Props) {
     <div className="relative">
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
       <Input
-        className="pl-10 border-[#B9BEC7] rounded-full w-64 text-sm"
+        className="pl-10 border-[#B9BEC7] rounded-full w-full max-w-64 text-sm"
         placeholder="Search"
         value={searchTerm}
         onChange={(e) => {

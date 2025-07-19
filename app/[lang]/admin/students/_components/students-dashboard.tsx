@@ -34,6 +34,7 @@ import AdminSearchFilter from "@/components/admin-search-filter";
 import qs from "query-string";
 import { StudentJoinDate } from "./student-join-date";
 import { StudentDateOfBirth } from "./student-date-of-birth";
+import CoursesFilter from "./courses-filter";
 
 interface Props {
   currentPage: number;
@@ -44,6 +45,7 @@ interface Props {
   courses: CourseWithVideosProgress[];
   searchParams: Record<string, string | string[] | undefined>;
   countries: string[];
+  allCourses: { label: string; value: string }[];
 }
 
 export default function StudentDashboard({
@@ -55,6 +57,7 @@ export default function StudentDashboard({
   courses,
   searchParams,
   countries,
+  allCourses,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -76,6 +79,7 @@ export default function StudentDashboard({
             dateOfBirthTo: searchParams.dateOfBirthTo,
             status: searchParams.status,
             country: searchParams.country,
+            courses: searchParams.courses,
           },
         },
         { skipNull: true }
@@ -98,6 +102,7 @@ export default function StudentDashboard({
             dateOfBirthTo: searchParams.dateOfBirthTo,
             status: searchParams.status,
             country: searchParams.country,
+            courses: searchParams.courses,
           },
         },
         { skipNull: true }
@@ -115,7 +120,8 @@ export default function StudentDashboard({
               <h1 className="text-xl font-semibold">Student</h1>
               <AdminSearchFilter dict={dict} url="/admin/students" />
             </div>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-end gap-4 flex-1">
+              <CoursesFilter courses={allCourses} />
               <StudentJoinDate />
               <StudentDateOfBirth />
               <Select
@@ -132,6 +138,7 @@ export default function StudentDashboard({
                         dateOfBirthFrom: searchParams.dateOfBirthFrom,
                         dateOfBirthTo: searchParams.dateOfBirthTo,
                         status: searchParams.status,
+                        courses: searchParams.courses,
                         country: country === "default" ? null : country,
                       },
                     },
@@ -169,6 +176,7 @@ export default function StudentDashboard({
                         dateOfBirthTo: searchParams.dateOfBirthTo,
                         country: searchParams.country,
                         status: status === "default" ? null : status,
+                        courses: searchParams.courses,
                       },
                     },
                     { skipNull: true }
@@ -328,7 +336,7 @@ export default function StudentDashboard({
               {Math.min(currentPage * studentsPerPage, totalStudents)} of{" "}
               {totalStudents} entries
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center space-x-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -350,6 +358,7 @@ export default function StudentDashboard({
                       dateOfBirthTo: searchParams.dateOfBirthTo,
                       status: searchParams.status,
                       country: searchParams.country,
+                      courses: searchParams.courses,
                     },
                   },
                   { skipNull: true }

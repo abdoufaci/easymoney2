@@ -8,9 +8,10 @@ import { Button } from "./button";
 interface Props {
   otp: any;
   playbackInfo: any;
+  title?: string;
 }
 
-export function LampDemo({ otp, playbackInfo }: Props) {
+export function LampDemo({ otp, playbackInfo, title = "Follow Up" }: Props) {
   return (
     <LampContainer className="w-full">
       {/* <motion.div
@@ -51,7 +52,7 @@ export function LampDemo({ otp, playbackInfo }: Props) {
         className="-mt-[450px] bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl 
         font-medium md:!text-7xl space-y-16 w-full flex flex-col items-center justify-center ">
         <div className="space-y-5">
-          <h1>Follow Up</h1>
+          <h1>{title}</h1>
         </div>
         <div className="flex flex-col items-center justify-center space-y-10 gap-5 w-full">
           <iframe

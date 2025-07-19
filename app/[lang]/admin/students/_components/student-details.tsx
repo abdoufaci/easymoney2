@@ -3,6 +3,7 @@ import { removeStudentFromCourse } from "@/backend/mutations/courses/remove-stud
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useModal } from "@/hooks/useModalStore";
 import { CourseWithVideos, CourseWithVideosProgress } from "@/types/types";
 import { User } from "@prisma/client";
 import { format } from "date-fns";
@@ -19,6 +20,7 @@ interface Props {
 
 function StudentDetails({ dict, student, courses }: Props) {
   const [isPending, startTransition] = useTransition();
+  const { onOpen } = useModal();
 
   const onCheck = async (courseId: string) => {
     startTransition(() => {
@@ -77,7 +79,10 @@ function StudentDetails({ dict, student, courses }: Props) {
         <div className="flex flex-col gap-4 w-full">
           <div className="flex items-center gap-3">
             <h1 className="text-lg font-semibold">Informations</h1>
-            <SquarePen className="h-4 w-4 cursor-pointer" />
+            <SquarePen
+              onClick={() => onOpen("editStudent", { user: student, dict })}
+              className="h-4 w-4 cursor-pointer"
+            />
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[#C0BDBD]">Email</span>

@@ -1,9 +1,9 @@
-import VideoUploader from "@/components/video-uploader";
+import DirectBunnyUploader from "@/components/video-uploader";
 
 function UploadVideoPage() {
   return (
     <div>
-      <VideoUploader />
+      <DirectBunnyUploader />
     </div>
   );
 }

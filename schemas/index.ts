@@ -107,3 +107,24 @@ export const VerificationDocumentsSchema = z.object({
     type: z.string(),
   }),
 });
+
+export const EditStudentSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  phone: z.string().min(1, {
+    message: "Phone is Required",
+  }),
+  image: z
+    .object({
+      id: z.string(),
+      type: z.string(),
+    })
+    .optional(),
+  zipCode: z.string(),
+  country: z.string(),
+  city: z.string(),
+  adress: z.string(),
+  year: z.string(),
+  month: z.string(),
+  day: z.string(),
+});

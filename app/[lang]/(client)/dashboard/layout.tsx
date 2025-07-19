@@ -36,6 +36,7 @@ export default async function DashboardLayout({ children }: Props) {
         backgroundPosition: "cover",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        backgroundAttachment: "fixed",
       }}
       className="min-h-screen">
       <DashboardHeader />

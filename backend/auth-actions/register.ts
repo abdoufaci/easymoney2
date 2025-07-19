@@ -26,7 +26,7 @@ export const register = async (
 
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = await getUserByEmail(email.trim());
 
   if (existingUser) {
     return { error: dict.auth.emailAlreadyUsed };

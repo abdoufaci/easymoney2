@@ -5,6 +5,7 @@ import { getUserById } from "@/data/user";
 import { redirect } from "next/navigation";
 import CourseBody from "../_components/course-body";
 import { getVideoById } from "@/backend/mutations/courses/get-video-by-id";
+import { getDictionary } from "@/app/[lang]/dictionaries";
 
 interface Props {
   params: {
@@ -17,6 +18,7 @@ interface Props {
 async function VideoIdPage({
   params: { courseId, lang, videoId: vId },
 }: Props) {
+  const dict = await getDictionary(lang);
   const auth = await currentUser();
   const user = await getUserById(auth?.id || "");
 
@@ -47,7 +49,7 @@ async function VideoIdPage({
         backgroundSize: "cover",
       }}
       className="min-h-screen">
-      <DashboardHeader courseName={course?.englishTitle} />
+      <DashboardHeader dict={dict} courseName={course?.englishTitle} />
       <CourseBody course={course} user={user} videoId={vId} video={video} />
     </div>
   );

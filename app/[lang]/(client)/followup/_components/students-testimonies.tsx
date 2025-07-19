@@ -13,9 +13,10 @@ import { number } from "zod";
 
 interface Props {
   groups: TestimonyGroupWithTestimonies[];
+  dict: any;
 }
 
-function StudentsTestimonies({ groups: rawGroups }: Props) {
+function StudentsTestimonies({ groups: rawGroups, dict }: Props) {
   const [currentNumber, setCurrentNumber] = useState(1);
   const groups = rawGroups.map((item) => ({
     name: item.title,
@@ -79,7 +80,9 @@ function StudentsTestimonies({ groups: rawGroups }: Props) {
                   {groups.length}
                 </span>
               </h1>
-              <h3 className="font-medium text-xl">Group</h3>
+              <h3 className="font-medium text-xl">
+                {dict.home.testimonials.groups}
+              </h3>
             </div>
             <div className="flex flex-col items-center">
               <h1 className="text-xl font-medium">
@@ -90,7 +93,9 @@ function StudentsTestimonies({ groups: rawGroups }: Props) {
                   {groups[groupInfo.groupIndex].number}
                 </span>
               </h1>
-              <h3 className="font-medium text-xl">Student</h3>
+              <h3 className="font-medium text-xl">
+                {dict.home.testimonials.student}
+              </h3>
             </div>
           </div>
         )}

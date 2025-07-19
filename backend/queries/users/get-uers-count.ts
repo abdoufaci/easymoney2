@@ -83,6 +83,15 @@ export const getUsersCount = async (
             lte: dateOfBirthTo,
           },
         }),
+      ...(searchParams?.courses && {
+        courses: {
+          some: {
+            id: {
+              in: searchParams.courses.split(","),
+            },
+          },
+        },
+      }),
     },
   });
 };

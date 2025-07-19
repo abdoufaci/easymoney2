@@ -18,3 +18,7 @@ export const Laviossa = localFont({
 export const GoodTimes = localFont({
   src: "./fonts/Good Times Rg.otf",
 });
+
+export const GilroyMedium = localFont({
+  src: "./fonts/Gilroy-Medium.ttf",
+});

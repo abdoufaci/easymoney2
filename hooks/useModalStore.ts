@@ -23,7 +23,9 @@ export type ModalType =
   | "addGroupMember"
   | "checkoutCart"
   | "addTestemonyGroup"
-  | "addTestimony";
+  | "addTestimony"
+  | "editStudent"
+  | "deleteStudent";
 
 interface ModalData {
   dict?: any;
@@ -36,6 +38,8 @@ interface ModalData {
   group?: GroupWithMembersWithMessages | null;
   cartSection?: SectionWithCourseWithVideosProgress;
   isUploadthing?: boolean;
+  isVerify?: boolean;
+  isEdit?: boolean;
 }
 
 interface ModalStore {

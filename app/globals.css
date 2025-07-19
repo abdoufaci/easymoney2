@@ -22,6 +22,62 @@
   }
 }
 
+.reserveButton {
+  background: #1FB4AB45;
+  border: 1.42px solid #FFFFFF26;
+  box-shadow: 0px 0px 8.52px 4.26px #FFFFFF40 inset;
+  backdrop-filter: blur(19.875px);
+}
+
+.reserveButton:hover {
+  background: #1FB4AB45;
+  border: 1.42px solid #FFFFFF26;
+  box-shadow: 0px 0px 8.52px 4.26px #FFFFFF40 inset;
+  backdrop-filter: blur(19.875px);
+
+}
+
+.textGradient {
+  background: linear-gradient(96.42deg, #FFFFFF 2.48%, rgba(255, 255, 255, 0.25) 152.62%);
+  color: transparent;
+  background-clip: text;
+}
+
+.textGradient:is(.dark *) {
+  background: linear-gradient(96.42deg, #FFFFFF 2.48%, rgba(255, 255, 255, 0.25) 152.62%);
+  color: transparent;
+  background-clip: text;
+
+}
+
+.joinCard {
+  border: 0.19px solid;
+  border-image-source: linear-gradient(158.28deg, rgba(255, 255, 255, 0.08) 3.81%, rgba(255, 255, 255, 0.04) 95.31%);
+  backdrop-filter: blur(3.961036205291748px);
+  box-shadow: 0px 0.75px 0.75px 0px #00000040;
+  background: linear-gradient(158.14deg, rgba(64, 65, 79, 0.17) 4.17%, rgba(27, 27, 31, 0.17) 94.14%);
+
+}
+
+.testimoniesBg {
+  background: linear-gradient(177.71deg, rgba(7, 8, 10, 0) 1.92%, #07080A 93.29%);
+}
+
+.textBlur {
+  box-shadow: 0px 0px 13.1px 0px #1FB4AB54;
+}
+
+.sepBlur {
+  backdrop-filter: blur(11.399999618530273px)
+}
+
+.iconBox {
+  border: 0.43px solid;
+  border-image-source: linear-gradient(158.28deg, rgba(255, 255, 255, 0.18) 3.81%, rgba(255, 255, 255, 0.14) 95.31%);
+  backdrop-filter: blur(9.157779693603516px);
+  box-shadow: 0px 1.73px 1.73px 0px #00000040;
+}
+
 .backBlur {
   backdrop-filter: blur(21.399999618530273px)
 }

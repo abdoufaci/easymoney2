@@ -24,7 +24,7 @@ interface Props {
 
 function CourseVideo({ course, video, videoId }: Props) {
   const indexOfSelectedVideo = course?.videos.findIndex(
-    (item) => item.videoId === videoId
+    (item) => item.id === videoId
   );
 
   const router = useRouter();
@@ -41,36 +41,44 @@ function CourseVideo({ course, video, videoId }: Props) {
         allow="encrypted-media"
         className="w-full h-full aspect-video"></iframe>
       <div className="flex items-center justify-between gap-5">
-        <Button
-          onClick={() =>
-            router.push(
-              //@ts-ignore
-              `/course/${course?.videos[indexOfSelectedVideo - 1].courseId}/${
+        {indexOfSelectedVideo === 0 ? (
+          <div></div>
+        ) : (
+          <Button
+            onClick={() =>
+              router.push(
                 //@ts-ignore
-                course?.videos[indexOfSelectedVideo - 1].id
-              }`
-            )
-          }
-          disabled={indexOfSelectedVideo === 0}
-          variant={"whiteOutline"}
-          className="rounded-full w-32 h-9">
-          Previous
-        </Button>
-        <Button
-          onClick={() =>
-            router.push(
-              //@ts-ignore
-              `/course/${course?.videos[indexOfSelectedVideo + 1].courseId}/${
+                `/course/${course?.videos[indexOfSelectedVideo - 1].courseId}/${
+                  //@ts-ignore
+                  course?.videos[indexOfSelectedVideo - 1].id
+                }`
+              )
+            }
+            disabled={indexOfSelectedVideo === 0}
+            variant={"whiteOutline"}
+            className="rounded-full w-32 h-9">
+            Previous
+          </Button>
+        )}
+        {indexOfSelectedVideo === (course?.videos.length || 0) - 1 ? (
+          <div></div>
+        ) : (
+          <Button
+            onClick={() =>
+              router.push(
                 //@ts-ignore
-                course?.videos[indexOfSelectedVideo + 1].id
-              }`
-            )
-          }
-          disabled={indexOfSelectedVideo === (course?.videos.length || 0) - 1}
-          variant={"brand"}
-          className="rounded-full w-32 h-9">
-          Next
-        </Button>
+                `/course/${course?.videos[indexOfSelectedVideo + 1].courseId}/${
+                  //@ts-ignore
+                  course?.videos[indexOfSelectedVideo + 1].id
+                }`
+              )
+            }
+            disabled={indexOfSelectedVideo === (course?.videos.length || 0) - 1}
+            variant={"brand"}
+            className="rounded-full w-32 h-9">
+            Next
+          </Button>
+        )}
       </div>
     </div>
   );

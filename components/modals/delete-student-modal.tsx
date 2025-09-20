@@ -48,7 +48,7 @@ export const DeleteStudentModal = () => {
         <h1 className="text-lg font-medium text-center">
           You Sure you want to delete{" "}
           <span className="text-brand">@{user?.name}</span> of the email{" "}
-          <span className="text-brand">dozkjdozd@gmail.com</span>
+          <span className="text-brand">{user?.email}</span>
         </h1>
         <div className="flex items-center gap-3">
           <Button

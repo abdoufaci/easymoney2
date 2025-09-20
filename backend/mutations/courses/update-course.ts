@@ -60,11 +60,12 @@ export const updateCourse = async (
   });
 
   if (!!videosToAdd?.length) {
-    const data = videosToAdd.map((video) => ({
+    const data = videosToAdd.map((video, index) => ({
       courseId: video.courseId,
       englishTitle: video.englishTitle,
       arabicTitle: video.arabicTitle,
       videoId: video.videoId,
+      createdAt: new Date(Date.now() + index * 1000),
     }));
     await db.video.createMany({
       data,

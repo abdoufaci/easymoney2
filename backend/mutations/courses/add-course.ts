@@ -25,10 +25,11 @@ export const addCourse = async (
           image: data.image,
           videos: {
             createMany: {
-              data: data.videos.map((video) => ({
+              data: data.videos.map((video, index) => ({
                 englishTitle: video.englishTitle,
                 arabicTitle: video.arabicTitle,
                 videoId: video.videoId,
+                createdAt: new Date(Date.now() + index * 1000),
               })),
             },
           },

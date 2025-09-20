@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import { QClientProvider } from "@/providers/query-provider";
 import NextTopLoader from "nextjs-toploader";
 import { poppins } from "./fonts";
+import { FacebookPixel } from "@/components/facebook";
 
 export const metadata: Metadata = {
   title: "EasyMoney University",
@@ -46,6 +47,7 @@ export default async function RootLayout({
                 shadow="0 0 10px #1FB4AB,0 0 5px #1FB4AB"
               />
               {children}
+              <FacebookPixel />
               <ModalProvider />
               <Toaster richColors />
             </ThemeProvider>
